@@ -1,0 +1,9 @@
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active, 
+.btn-primary.active, 
+.btn-primary.disabled, 
+.btn-primary[disabled]
+{
+	background-color: maroon;
+}
