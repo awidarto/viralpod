@@ -62,7 +62,7 @@ class AdminController extends Controller {
 
 		$heads = $this->heads;
 
-		$select_all = Former::checkbox('select_all')->check(false)->id('select_all');
+		$select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
 
 		// add selector and sequence columns
 		array_unshift($heads, array($select_all,array('search'=>false,'sort'=>false)));
@@ -103,7 +103,9 @@ class AdminController extends Controller {
 
 		$fields = $this->fields;
 
-		array_unshift($fields, array('select',array('kind'=>false)));
+		//print_r($fields);
+
+		//array_unshift($fields, array('select',array('kind'=>false)));
 		array_unshift($fields, array('seq',array('kind'=>false)));
 
 		$pagestart = Input::get('iDisplayStart');
@@ -120,13 +122,15 @@ class AdminController extends Controller {
 		$hilite = array();
 		$hilite_replace = array();
 
-		$model = $this->model;
+		$model = LMongo::collection('products');
 
 		$count_all = $model->count();
 
 		for($i = 0;$i < count($fields);$i++){
 			$idx = $i;
+			
 			//print_r($fields[$i]);
+			
 			$field = $fields[$i][0];
 			$type = $fields[$i][1]['kind'];
 
@@ -138,40 +142,66 @@ class AdminController extends Controller {
 					if($fields[$i][1]['query'] == 'like'){
 						$pos = $fields[$i][1]['pos'];
 						if($pos == 'both'){
+							$model->whereRegex($field,'/'.Input::get('sSearch_'.$idx).'/i');
+
 							$qval = new MongoRegex('/'.Input::get('sSearch_'.$idx).'/i');
 						}else if($pos == 'before'){
+							$model->whereRegex($field,'/^'.Input::get('sSearch_'.$idx).'/i');
+
 							$qval = new MongoRegex('/^'.Input::get('sSearch_'.$idx).'/i');
 						}else if($pos == 'after'){
+							$model->whereRegex($field,'/'.Input::get('sSearch_'.$idx).'$/i');
+
 							$qval = new MongoRegex('/'.Input::get('sSearch_'.$idx).'$/i');
 						}
 					}else{
 						$qval = Input::get('sSearch_'.$idx);
+
+						$model->where($field,$qval);
 					}
 				}elseif($type == 'numeric' || $type == 'currency'){
 					$str = Input::get('sSearch_'.$idx);
 
 					$sign = null;
 
-					if(strpos($str, "<=") !== false){
-						$sign = '$lte';
-					}elseif(strpos($str, ">=") !== false){
-						$sign = '$gte';
-					}elseif(strpos($str, ">") !== false){
-						$sign = '$gt';
-					}elseif(stripos($str, "<") !== false){
-						$sign = '$lt';
-					}
+					$strval = trim(str_replace(array('<','>','='), '', $str));
 
-					//print $sign;
+					$qval = new MongoInt32($strval);
 
-					$str = trim(str_replace(array('<','>','='), '', $str));
-
+					/*
 					if(is_null($sign)){
-						$qval = new MongoInt32($str);
+						$qval = new MongoInt32($strval);
 					}else{
 						$str = new MongoInt32($str);
 						$qval = array($sign=>$str);
 					}
+					*/
+
+
+					if(strpos($str, "<=") !== false){
+						$sign = '$lte';
+
+						$model->whereLte($field,$qval);
+
+					}elseif(strpos($str, ">=") !== false){
+						$sign = '$gte';
+
+						$model->whereGte($field,$qval);
+
+					}elseif(strpos($str, ">") !== false){
+						$sign = '$gt';
+
+						$model->whereGt($field,$qval);
+
+					}elseif(stripos($str, "<") !== false){
+						$sign = '$lt';
+
+						$model->whereLt($field,$qval);
+
+					}
+
+					//print $sign;
+
 				}elseif($type == 'date'){
 					$datestring = Input::get('sSearch_'.$idx);
 
@@ -182,15 +212,21 @@ class AdminController extends Controller {
 
 						$qval = array($field =>array('$gte'=>$daystart,'$lte'=>$dayend));
 					    //echo "$str == " . date('l dS \o\f F Y h:i:s A', $timestamp);
+
+						$model->whereBetween($field,$daystart,$dayend);
+
 					}
 					$qval = array('$gte'=>$daystart,'$lte'=>$dayend);
 					//$qval = Input::get('sSearch_'.$idx);
 				}elseif($type == 'datetime'){
 					$datestring = Input::get('sSearch_'.$idx);
+
 					$qval = new MongoDate(strtotime($datestring));
+
+					$model->where($field,$qval);
+
 				}
 
-				$model->where($field,$qval);
 				
 				$q[$field] = $qval;
 
@@ -202,11 +238,13 @@ class AdminController extends Controller {
 
 
 		/* first column is always sequence number, so must be omitted */
+
 		$fidx = Input::get('iSortCol_0') - 1;
 
 		$fidx = ($fidx == -1 )?0:$fidx;
 
 		$sort_col = $fields[$fidx][0];
+
 		$sort_dir = Input::get('sSortDir_0');
 
 		/*
@@ -219,8 +257,13 @@ class AdminController extends Controller {
 		}
 		*/
 
-		$results = $model->skip( $pagestart )->take( $pagelength )->orderBy($sort_col, $sort_dir )->get();
+		
+		$model->skip( $pagestart )->take( $pagelength )->orderBy($sort_col, $sort_dir );
+
 		$count_display_all = $model->count();
+		
+		$results = $model->get();
+
 
 		//print_r($results);
 
@@ -241,7 +284,10 @@ class AdminController extends Controller {
 			$row = array();
 
 			$row[] = $counter;
-			$row[] = Former::checkbox('sel_'.$doc['_id'])->check(false)->id($doc['_id'])->class('selector');
+
+			//$sel = Former::checkbox('sel_'.$doc['_id'])->check(false)->label(false)->id($doc['_id'])->class('selector')->__toString();
+			$sel = '<input type="checkbox" name="sel_'.$doc['_id'].'" id="'.$doc['_id'].'" value="'.$doc['_id'].'" class="selector" />';
+			$row[] = $sel;
 
 			foreach($fields as $field){
 				if($field[1]['kind'] != false && $field[1]['show'] == true){

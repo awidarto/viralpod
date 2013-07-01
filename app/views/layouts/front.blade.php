@@ -14,7 +14,6 @@
       {{ HTML::style('bootplus/css/bootplus-responsive.min.css') }}
       {{ HTML::style('bootplus/css/font-awesome.min.css') }}
 
-      {{ HTML::style('css/jquery.dataTables.css') }}
       {{ HTML::style('css/dataTables.bootstrap.css') }}
 
       {{ HTML::style('css/bootstrap-timepicker.css') }}
@@ -30,6 +29,8 @@
       <![endif]-->
 
       {{ HTML::style('css/front.css') }}
+      {{ HTML::style('css/form.css') }}
+      {{ HTML::style('css/gridtable.css') }}
 
       <!-- Fav and touch icons -->
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
@@ -46,7 +47,7 @@
       {{ HTML::script('js/jquery.collagePlus.min.js')}}
       {{ HTML::script('js/jquery.collageCaption.js')}}
       {{ HTML::script('js/jquery-datatables/jquery.datatables.min.js')}}
-      {{ HTML::script('js/jquery-datatables/dataTables.bootstrap.js')}}
+      {{ HTML::script('js/jquery-datatables/datatables.bootstrap.js')}}
 
       {{ HTML::script('js/jquery.tagsinput.js') }}
   
@@ -75,7 +76,7 @@
             <div class="row-fluid">
               <div class="span1">
                 <a class="brand" href="{{ URL::to('/')}}">
-                  <img src="images/se-logo.png">
+                  <img src="{{ URL::to('/') }}/images/se-logo.png">
                 </a>
               </div>
               <div class="span5" style="vertical-align:bottom">

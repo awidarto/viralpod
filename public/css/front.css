@@ -191,19 +191,20 @@ body {
 .hero-unit h1 {color: #FFF}
 .hero-unit p {color: #F5F5F5}
 
-thead#searchinput tr td{
-  border:none;
-}
 
-thead#searchinput tr td input.search_init{
-  width:100%;
-}
-
-thead#searchinput tr td input.search_init:focus{
-  width:100px;
-}
-
-div.container.main{
+div.container.main, div.container.top-nav{
   width:100%;
   padding: 0 10px;
+}
+
+table.table thead .sorting{
+
+}
+
+.command-bar{
+  text-align: right;
+}
+
+.command-bar .btn{
+  float:right;
 }
