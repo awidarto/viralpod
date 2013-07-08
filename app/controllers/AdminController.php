@@ -39,6 +39,8 @@ class AdminController extends Controller {
 
 		Former::framework($this->form_framework);
 
+		$this->beforeFilter('auth', array('on'=>'get', 'only'=>array('getIndex','getAdd','getEdit') ));
+
 	}
 
 
@@ -122,7 +124,7 @@ class AdminController extends Controller {
 		$hilite = array();
 		$hilite_replace = array();
 
-		$model = LMongo::collection('products');
+		$model = $this->model;
 
 		$count_all = $model->count();
 
@@ -359,6 +361,156 @@ class AdminController extends Controller {
 		return Response::json($result);
 	}
 
+	public function getAdd(){
+		
+		$controller_name = strtolower($this->controller_name);
+
+		//$this->crumb->add($controller_name.'/add','New '.Str::singular($this->controller_name));
+
+		$model = $this->model;
+
+		$form = $this->form;
+
+		return View::make($controller_name.'.'.$this->form_add)
+					->with('back',$controller_name)
+					->with('form',$form)
+					->with('submit',$controller_name.'/add')
+					->with('crumb',$this->crumb)
+					->with('title','New '.Str::singular($this->controller_name));
+
+	}
+
+	public function postAdd($data = null){
+
+		//print_r(Session::get('permission'));
+		if(is_null($data)){
+			$data = Input::get();
+		}
+
+		//print_r($data);
+
+		$data = $this->beforeValidateAdd($data);
+
+		$controller_name = strtolower($this->controller_name);
+
+	    $validation = Validator::make($input = $data, $this->validator);
+
+	    if($validation->fails()){
+
+	    	return Redirect::to($controller_name.'/add')->withErrors($validation)->withInput(Input::all());
+
+	    }else{
+
+			unset($data['csrf_token']);
+
+			$data['createdDate'] = new MongoDate();
+			$data['lastUpdate'] = new MongoDate();
+
+			
+			$model = $this->model;
+
+
+			$data = $this->beforeSave($data);
+
+			if($obj = $model->insert($data)){
+
+				$obj = $this->afterSave($obj);
+
+				//Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+		    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saved successfully');
+			}else{
+		    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saving failed');
+			}
+
+
+	    }
+
+	}
+
+	public function getEdit($id){
+
+		$controller_name = strtolower($this->controller_name);
+
+		//$this->crumb->add(strtolower($this->controller_name).'/edit','Edit',false);
+
+		$model = $this->model;
+
+		$_id = new MongoId($id);
+
+		$population = $model->where('_id',$_id)->first();
+
+		$population = $this->beforeUpdateForm($population);
+
+		foreach ($population as $key=>$val) {
+			if($val instanceof MongoDate){
+				$population[$key] = date('d-m-Y H:i:s',$val->sec);
+			}
+		}
+
+		//print_r($population);
+
+		//exit();
+
+		Former::populate($population);
+
+		//$this->crumb->add(strtolower($this->controller_name).'/edit/'.$id,$id,false);
+
+		return View::make(strtolower($this->controller_name).'.'.$this->form_edit)
+					->with('back',$controller_name)
+					->with('formdata',$population)
+					->with('submit',strtolower($this->controller_name).'/edit/'.$id)
+					->with('title','Edit '.Str::singular($this->controller_name));
+
+	}
+
+
+	public function postEdit($id,$data = null){
+
+		$controller_name = strtolower($this->controller_name);
+		//print_r(Session::get('permission'));
+
+	    $validation = Validator::make($input = Input::all(), $this->validator);
+
+	    if($validation->fails()){
+
+	    	return Redirect::to($controller_name.'/edit/'.$id)->withErrors($validation);
+	    	//->with_input(Input::all());
+
+	    }else{
+
+	    	if(is_null($data)){
+				$data = Input::get();
+	    	}
+
+			$id = new MongoId($data['id']);
+			$data['lastUpdate'] = new MongoDate();
+
+			unset($data['csrf_token']);
+			unset($data['id']);
+
+			//print_r($data);
+			//exit();
+
+			$model = $this->model;
+
+			$data = $this->beforeUpdate($id,$data);
+
+			if($obj = $model->where('_id',$id)->update($data)){
+
+				$obj = $this->afterUpdate($id,$data);
+				if($obj != false){
+			    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saved successfully');
+				}
+			}else{
+		    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saving failed');
+			}
+
+	    }
+
+	}
+
+
+
 	public function postDel(){
 		$id = Input::get('id');
 
@@ -372,7 +524,7 @@ class AdminController extends Controller {
 
 			$id = new MongoId($id);
 
-			if($model->delete(array('_id'=>$id))){
+			if($model->array('_id',$id)->delete()){
 				Event::fire($controller_name.'.delete',array('id'=>$id,'result'=>'OK'));
 				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{
@@ -432,7 +584,7 @@ class AdminController extends Controller {
 
 		$model = $this->model;
 
-		$obj = $model->get(array('_id'=>$_id));
+		$obj = $model->where('_id',$_id)->get();
 
 		$obj = $this->beforeView($obj);
 
@@ -441,7 +593,6 @@ class AdminController extends Controller {
 
 		//return View::make(strtolower($this->controller_name).'.'.$this->view_object)
 		return View::make('view')
-			->with('crumb',$this->crumb)
 			->with('obj',$obj);
 	}
 

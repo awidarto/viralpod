@@ -20,22 +20,18 @@ class ProductsController extends AdminController {
 	{
 
 		$this->heads = array(
-			array('Name',array('search'=>true,'sort'=>true)),
-			array('Product Code',array('search'=>true,'sort'=>true)),
-			array('Permalink',array('search'=>true,'sort'=>true)),
-			array('Description',array('search'=>true,'sort'=>true)),
-			array('Section',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_sections'))),
-			//array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('content.news.categories'))),
-			//array('Category',array('search'=>true,'sort'=>true)),
-			//array('Tags',array('search'=>true,'sort'=>true)),
-			array('Currency',array('search'=>true,'sort'=>true)),
-			array('Retail Price',array('search'=>true,'sort'=>true)),
-			array('Sale Price',array('search'=>true,'sort'=>true)),
-			//array('Effective From',array('search'=>true,'sort'=>true)),
-			//array('Effective Until',array('search'=>true,'sort'=>true)),
+			array('Brand',array('search'=>true,'sort'=>true)),
+			array('Collection',array('search'=>true,'sort'=>true)),
+			array('Trade Name',array('search'=>true,'sort'=>true)),
+			array('Product',array('search'=>true,'sort'=>true)),
+			array('Model No.',array('search'=>true,'sort'=>true)),
+			array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
+			array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
+			array('Tags',array('search'=>true,'sort'=>true)),
+			array('HTags',array('search'=>true,'sort'=>true)),
+			array('Price',array('search'=>true,'sort'=>true)),
 			array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
 			array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
-			//array('Productsequence',array('search'=>true,'sort'=>true))
 		);
 
 		return parent::getIndex();
@@ -44,28 +40,49 @@ class ProductsController extends AdminController {
 
 	public function postIndex()
 	{
+		$this->model = LMongo::collection('products');
+
 		$this->fields = array(
-			array('name',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'callback'=>'namePic','attr'=>array('class'=>'expander'))),
-			array('productcode',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('permalink',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('description',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('section',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			//array('category',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			//array('tags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('priceCurrency',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('retailPrice',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
-			array('salePrice',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
-			//array('effectiveFrom',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			//array('effectiveUntil',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+			array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
 			array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
 			array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
-			//array('productsequence',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true))
 		);
 
 		return parent::postIndex();
 	}
 
-	public function makeActions($data){
+	public function postAdd($data = null)
+	{
+
+		$this->validator = array(
+		    'brandName' => array('Brand Name','required'),
+		    'productName'=> 'required'
+	    );
+
+		return parent::postAdd($data);
+	}
+
+	public function postEdit($id,$data = null)
+	{
+		$this->validator = array(
+		    'brandName' => 'required',
+		    'productName'=> 'required'
+	    );
+
+		return parent::postEdit($id,$data);
+	}
+
+	public function makeActions($data)
+	{
 		$delete = '<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$data['_id'].'" >Delete</span>';
 		$edit =	'<a class="icon-"  href="'.URL::to('products/edit/'.$data['_id']).'"><i>&#xe164;</i><span>Update Product</span>';
 
@@ -73,7 +90,8 @@ class ProductsController extends AdminController {
 		return $actions;
 	}
 
-	public function namePic($data){
+	public function namePic($data)
+	{
 		$name = HTML::link('products/view/'.$data['_id'],$data['name']);
 		$display = HTML::image(URL::to('/').'/storage/products/'.$data['_id'].'/sm_pic0'.$data['defaultpic'].'.jpg?'.time(), 'sm_pic01.jpg', array('id' => $data['_id']));
 		return $display.'<br />'.$name;

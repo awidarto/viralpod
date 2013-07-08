@@ -8,6 +8,14 @@
 	background-color: maroon;
 }
 
+input, textarea, .uneditable-input{
+	width:300px;
+}
+
+textarea{
+	min-height: 100px;
+}
+
 .styled-select{
 	display: block;
 	border: 2px solid #cccccc;

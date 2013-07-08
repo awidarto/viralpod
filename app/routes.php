@@ -12,15 +12,30 @@
 */
 
 Route::controller('products', 'ProductsController');
+Route::controller('members', 'MembersController');
+Route::controller('administrators', 'AdministratorsController');
+Route::controller('companies', 'CompaniesController');
+Route::controller('projects', 'ProjectsController');
+Route::controller('events', 'EventsController');
 
 Route::get('/', function()
 {
-	return View::make('pages.home');
+    if(Auth::guest()){
+        return Redirect::to('login');
+    }else{
+        return Redirect::to('dashboard');
+    }
 });
 
 Route::get('hashme/{mypass}',function($mypass){
 
     print Hash::make($mypass);
+});
+
+Route::get('dashboard',function(){
+
+    return View::make('pages.dashboard');
+
 });
 
 Route::get('login',function(){

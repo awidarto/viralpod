@@ -13,7 +13,7 @@
 -->
 <div class="row">
 	<div class="span12 command-bar">
-       	<a href="" class="btn">Add</a>
+       	<a href="{{ URL::to($addurl) }}" class="btn">Add</a>
 		
 	   @if (Session::has('notify_operationalform'))
 	        <div class="alert alert-error">
@@ -23,7 +23,7 @@
 	 </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
    <div class="span12">
 
 
