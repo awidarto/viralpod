@@ -56,11 +56,10 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    /*
+    
     $('select').select2({
       width : 'resolve'
     });
-    */
 
     $('#field_role').change(function(){
         //alert($('#field_role').val());
