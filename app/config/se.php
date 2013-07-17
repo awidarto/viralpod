@@ -3,7 +3,10 @@
 
 
 return array(
-
+    'adminroles'=> array(
+        'root'=>'Root User',
+        'superuser'=>'Superuser'
+    ),
 	'currency'=>array(
 			'IDR'=>'IDR',
 			'USD'=>'USD',
@@ -14,14 +17,14 @@ return array(
 		),
 	'product_categories'=>array(
 			'Finishes'=>'Finishes',
-			'Finishes (Natural Stone or Timber)'=>'Finishes (Natural Stone or Timber)',
+			'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',
 			'Structure'=>'Structure',
 			'Furniture'=>'Furniture'
 		),
 	'search_product_categories'=>array(
 			''=>'All',
 			'Finishes'=>'Finishes',
-			'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',
+            'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',
 			'Structure'=>'Structure',
 			'Furniture'=>'Furniture'
 		),
@@ -86,6 +89,38 @@ return array(
 		'Play Structures'=>array('value'=>'Play Structures')
 
 	),
+    'search_project_applications'=>array(
+        ''=>'All',
+        'Residential'=> 'Residential',
+        'Office'=>'Office',
+        'Laboratory'=>'Laboratory',
+        'Retail FB'=>'Retail, F&B',
+        'Sporting & Recreational'=>'Sporting & Recreational',
+        'Entertainment'=>'Entertainment',
+        'Hospitality'=>'Hospitality',
+        'Healthcare'=>'Healthcare',
+        'Educational'=>'Educational',
+        'Museum'=>'Museum',
+        'Transportation'=>'Transportation',
+        'Industrial'=>'Industrial',
+        'Historic Restoration'=>'Historic Restoration'
+    ),
+
+    'project_applications'=>array(
+        'Residential'=> 'Residential',
+        'Office'=>'Office',
+        'Laboratory'=>'Laboratory',
+        'Retail FB'=>'Retail, F&B',
+        'Sporting & Recreational'=>'Sporting & Recreational',
+        'Entertainment'=>'Entertainment',
+        'Hospitality'=>'Hospitality',
+        'Healthcare'=>'Healthcare',
+        'Educational'=>'Educational',
+        'Museum'=>'Museum',
+        'Transportation'=>'Transportation',
+        'Industrial'=>'Industrial',
+        'Historic Restoration'=>'Historic Restoration'
+    ),
 	'picsizes'=>array(
 		array('prefix'=>'sm_','w'=>50,'h'=>90,'opt'=>'fit','ext'=>'.jpg','q'=>90),
 		array('prefix'=>'med_','w'=>333,'h'=>324,'opt'=>'fit','ext'=>'.jpg','q'=>90),

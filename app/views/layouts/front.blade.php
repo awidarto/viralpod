@@ -34,7 +34,11 @@
       {{ HTML::style('css/select2.css') }}
       {{ HTML::style('css/jquery.tagsinput.css') }}
 
-      
+      {{ HTML::style('css/jquery-fileupload/css/jquery.fileupload-ui.css') }}
+
+      {{ HTML::style('js/jquery.fineuploader-3.7.0/fineuploader-3.7.0.css') }}
+
+
 
       <!-- Fav and touch icons -->
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
@@ -43,7 +47,7 @@
       <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
       <link rel="shortcut icon" href="../assets/ico/favicon.png">
 
-      {{ HTML::script('js/jquery-1.8.3.min.js')}}
+      {{ HTML::script('js/jquery-1.9.1.js')}}
       {{ HTML::script('js/jquery-ui-1.9.2.custom.min.js')}}
 
 
@@ -61,9 +65,24 @@
 
       {{ HTML::script('js/select2.js') }}
 
+      {{ HTML::script('js/jquery-fileupload/vendor/jquery.ui.widget.js') }}
+
+      {{ HTML::script('js/js-load-image/load-image.min.js') }}
+
+      {{ HTML::script('js/js-canvas-to-blob/canvas-to-blob.min.js') }}
+
+      {{ HTML::script('js/jquery-fileupload/jquery.iframe-transport.js') }}
+
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload.js') }}
+
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload-process.js') }}
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload-image.js') }}
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload-audio.js') }}
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload-video.js') }}
+      {{ HTML::script('js/jquery-fileupload/jquery.fileupload-validate.js') }}
 
       <script type="text/javascript">
-      base = '{{ URL::to('/') }}/';
+        base = '{{ URL::to('/') }}/';
       </script>
 
 

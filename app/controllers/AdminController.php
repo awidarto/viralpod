@@ -130,9 +130,9 @@ class AdminController extends Controller {
 
 		for($i = 0;$i < count($fields);$i++){
 			$idx = $i;
-			
+
 			//print_r($fields[$i]);
-			
+
 			$field = $fields[$i][0];
 			$type = $fields[$i][1]['kind'];
 
@@ -229,7 +229,7 @@ class AdminController extends Controller {
 
 				}
 
-				
+
 				$q[$field] = $qval;
 
 			}
@@ -259,11 +259,11 @@ class AdminController extends Controller {
 		}
 		*/
 
-		
+
 		$model->skip( $pagestart )->take( $pagelength )->orderBy($sort_col, $sort_dir );
 
 		$count_display_all = $model->count();
-		
+
 		$results = $model->get();
 
 
@@ -362,7 +362,7 @@ class AdminController extends Controller {
 	}
 
 	public function getAdd(){
-		
+
 		$controller_name = strtolower($this->controller_name);
 
 		//$this->crumb->add($controller_name.'/add','New '.Str::singular($this->controller_name));
@@ -406,7 +406,7 @@ class AdminController extends Controller {
 			$data['createdDate'] = new MongoDate();
 			$data['lastUpdate'] = new MongoDate();
 
-			
+
 			$model = $this->model;
 
 
@@ -524,7 +524,7 @@ class AdminController extends Controller {
 
 			$id = new MongoId($id);
 
-			if($model->array('_id',$id)->delete()){
+			if($model->where('_id',$id)->delete()){
 				Event::fire($controller_name.'.delete',array('id'=>$id,'result'=>'OK'));
 				$result = array('status'=>'OK','data'=>'CONTENTDELETED');
 			}else{

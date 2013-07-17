@@ -10,34 +10,38 @@
 <div class="row">
     <div class="span6">
 
-        {{ Former::select('mainCategory','Main Category')->options(Config::get('se.main_categories')) }}
-        {{ Former::text('brandName','Brand Name') }}
-        {{ Former::text('shopCategory','Shop Category') }}
-        {{ Former::text('tradeName','Trade Name') }}
-        {{ Former::select('countryOfOrigin')->options(Config::get('country.countries'))->label('Country of Origin') }}
-        {{ Former::text('modelNo','Model No.') }}
-        {{ Former::text('collectionName','Collection Name') }}
-        {{ Former::textarea('ecoFriendly','Eco-friendly') }}
-        {{ Former::text('designedBy','Designed by') }}
-        {{ Former::text('madeBy','Made by') }}
-        {{ Former::text('priceUSD','Price ($USD)') }}
+        {{ Former::text('eventTitle','Event Title') }}
+
+        {{ View::make('partials.editortoolbar')->render() }}
+        {{ Former::textarea('eventDescription','Description')->id('description') }}
+        {{ Former::text('eventOwner','Owner') }}
         {{ Former::text('visibleTags','Tags (visible)')->class('tag_keyword') }}
         {{ Former::text('hiddenTags','Tags (hidden)')->class('tag_keyword') }}
 
     </div>
     <div class="span6">
-        {{ Former::text('productName','Product Name') }}
-        {{ Former::textarea('productProperties','Properties') }}
 
-        {{ Former::select('productApplication[]')->options(Config::get('se.applications'))->multiple(true)->label('Application') }}
-        {{ Former::select('productSystem[]')->options(Config::get('se.systems'))->name('productSystem')->multiple(true)->label('System') }}
-        {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
+        <div class="control-group">
+            <label class="control-label" for="startDate">Start Date</label>
+            <div class="controls">
+                <div class="input-append datepicker" id="dp3" data-date="" data-date-format="dd-mm-yyyy">
+                  <input class="span2" size="16" type="text" name="startDate" value="">
+                  <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
 
+        <div class="control-group">
+            <label class="control-label" for="endDate">End Date</label>
+            <div class="controls">
+                <div class="input-append datepicker" id="dp3" data-date="" data-date-format="dd-mm-yyyy">
+                  <input class="span2" size="16" type="text" name="endDate" value="">
+                  <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
 
-        {{ Former::select('productCategory','Category')->options(Config::get('se.product_categories')) }}
-        {{ Former::textarea('availableColours','Avail. Colours') }}
-        {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
-        {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}
+        {{ Former::text('openingHours','Opening Hours') }}
 
     </div>
 </div>
@@ -56,18 +60,18 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    /*
+
     $('select').select2({
       width : 'resolve'
     });
-    */
+
 
     $('#field_role').change(function(){
         //alert($('#field_role').val());
         // load default permission here
     });
 
-    var editor = new wysihtml5.Editor('bodycopy', { // id of textarea element
+    var editor = new wysihtml5.Editor('description', { // id of textarea element
       toolbar:      'wysihtml5-toolbar', // id of toolbar element
       parserRules:  wysihtml5ParserRules // defined in parser rules set
     });

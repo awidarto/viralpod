@@ -7,7 +7,7 @@ class ProductsController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
@@ -83,10 +83,10 @@ class ProductsController extends AdminController {
 
 	public function makeActions($data)
 	{
-		$delete = '<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$data['_id'].'" >Delete</span>';
-		$edit =	'<a class="icon-"  href="'.URL::to('products/edit/'.$data['_id']).'"><i>&#xe164;</i><span>Update Product</span>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<a href="'.URL::to('products/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
 
-		$actions = $edit.$delete;
+        $actions = $edit.'<br />'.$delete;
 		return $actions;
 	}
 

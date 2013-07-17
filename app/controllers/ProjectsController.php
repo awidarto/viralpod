@@ -7,7 +7,7 @@ class ProjectsController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
@@ -20,16 +20,9 @@ class ProjectsController extends AdminController {
 	{
 
 		$this->heads = array(
-			array('Brand',array('search'=>true,'sort'=>true)),
-			array('Collection',array('search'=>true,'sort'=>true)),
-			array('Trade Name',array('search'=>true,'sort'=>true)),
-			array('Product',array('search'=>true,'sort'=>true)),
-			array('Model No.',array('search'=>true,'sort'=>true)),
-			array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
-			array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
-			array('Tags',array('search'=>true,'sort'=>true)),
-			array('HTags',array('search'=>true,'sort'=>true)),
-			array('Price',array('search'=>true,'sort'=>true)),
+			array('Project Name',array('search'=>true,'sort'=>true)),
+			array('Product Used',array('search'=>true,'sort'=>true)),
+			array('Project Application',array('search'=>true,'sort'=>true)),
 			array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
 			array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
 		);
@@ -43,16 +36,9 @@ class ProjectsController extends AdminController {
 		$this->model = LMongo::collection('products');
 
 		$this->fields = array(
-			array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-			array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+			array('projectName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+			array('productUsed',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('projectApplication',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
 			array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
 		);
@@ -64,8 +50,7 @@ class ProjectsController extends AdminController {
 	{
 
 		$this->validator = array(
-		    'brandName' => array('Brand Name','required'),
-		    'productName'=> 'required'
+		    'projectName' => 'required'
 	    );
 
 		return parent::postAdd($data);
@@ -74,8 +59,7 @@ class ProjectsController extends AdminController {
 	public function postEdit($id,$data = null)
 	{
 		$this->validator = array(
-		    'brandName' => 'required',
-		    'productName'=> 'required'
+            'projectName' => 'required'
 	    );
 
 		return parent::postEdit($id,$data);
@@ -83,10 +67,10 @@ class ProjectsController extends AdminController {
 
 	public function makeActions($data)
 	{
-		$delete = '<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$data['_id'].'" >Delete</span>';
-		$edit =	'<a class="icon-"  href="'.URL::to('products/edit/'.$data['_id']).'"><i>&#xe164;</i><span>Update Product</span>';
+		$delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+		$edit =	'<a href="'.URL::to('projects/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
 
-		$actions = $edit.$delete;
+		$actions = $edit.'<br />'.$delete;
 		return $actions;
 	}
 

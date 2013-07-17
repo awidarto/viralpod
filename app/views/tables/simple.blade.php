@@ -14,7 +14,7 @@
 <div class="row">
 	<div class="span12 command-bar">
        	<a href="{{ URL::to($addurl) }}" class="btn">Add</a>
-		
+
 	   @if (Session::has('notify_operationalform'))
 	        <div class="alert alert-error">
 	             {{Session::get('notify_operationalform')}}
@@ -34,7 +34,7 @@
 		        <tr>
 		        	@foreach($heads as $head)
 		        		@if(is_array($head))
-		        			<th 
+		        			<th
 		        				@foreach($head[1] as $key=>$val)
 		        					@if(!is_array($val))
 		        						{{ $key }}="{{ $val }}"
@@ -54,7 +54,7 @@
 		        	<tr>
 		        	@foreach($secondheads as $head)
 		        		@if(is_array($head))
-		        			<th 
+		        			<th
 		        				@foreach($head[1] as $key=>$val)
 		        					@if($key != 'search')
 			        					{{ $key }}="{{ $val }}"
@@ -119,10 +119,10 @@
 				        		<td>&nbsp;</td>
 			    			@endif
 		    			@endif
-			    			
+
 
 		    		@elseif($in[0] == 'select_all')
-	    				<td>{{ Former::checkbox('select_all') }}</td>				    		
+	    				<td>{{ Former::checkbox('select_all') }}</td>
 		    		@elseif($in[0] == '')
 		        		<td>&nbsp;</td>
 		    		@endif
@@ -143,32 +143,32 @@
 @yield('dialog')
 
 <div id="viewformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	
+
 	<div class="modal-header">
 		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
 		<h3 id="myModalLabel">Form Submission</h3>
-		
+
 	</div>
 	<div class="modal-body" id="loaddata">
-		
+
 	</div>
-	
-	
+
+
 
 </div>
 
 <div id="editformModal" class="modal message hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	
+
 	<div class="modal-header">
 		<button type="button" id="removeviewform" class="close" data-dismiss="modal" aria-hidden="true"></button>
 		<h3 id="myModalLabel">Edit Form</h3>
-		
+
 	</div>
 	<div class="modal-body" id="loaddata">
-		
+
 	</div>
-	
-	
+
+
 
 </div>
 
@@ -194,7 +194,7 @@
 		<p id="statusdata" ></p>
 	</div>
 	<div class="modal-footer">
-		
+
 	</div>
 </div>
 
@@ -206,7 +206,7 @@
 	var current_del_id = 0;
 	var current_print_id = 0;
 
-	
+
 
 	function toggle_visibility(id) {
 		$('#' + id).toggle();
@@ -224,23 +224,23 @@
 	    @yield('row')
 
 	    sOut += '</table>';
-	     
+
 	    return sOut;
 	}
 
     $(document).ready(function(){
-    	
+
     	$.fn.dataTableExt.oApi.fnStandingRedraw = function(oSettings) {
 		    if(oSettings.oFeatures.bServerSide === false){
 		        var before = oSettings._iDisplayStart;
-		 
+
 		        oSettings.oApi._fnReDraw(oSettings);
-		 
+
 		        // iDisplayStart has been reset to zero - so lets change it back
 		        oSettings._iDisplayStart = before;
 		        oSettings.oApi._fnCalculateEnd(oSettings);
 		    }
-		      
+
 		    // draw the 'current' page
 		    oSettings.oApi._fnDraw(oSettings);
 		};
@@ -248,7 +248,7 @@
 		$('.activity-list').tooltip();
 
 		asInitVals = new Array();
-        
+
         oTable = $('.dataTable').DataTable(
 			{
 				"bProcessing": true,
@@ -263,45 +263,43 @@
 					"aiExclude": [ {{ $excludecol }} ]
 				},
 				@endif
-				
+
 				"oTableTools": {
 					"sSwfPath": "{{ URL::to('/')  }}/swf/copy_csv_xls_pdf.swf"
 				},
-				
-				"aoColumnDefs": [ 
+
+				"aoColumnDefs": [
 				    { "bSortable": false, "aTargets": [ {{ $disablesort }} ] }
 				 ],
 			    "fnServerData": function ( sSource, aoData, fnCallback ) {
 		            $.ajax( {
-		                "dataType": 'json', 
-		                "type": "POST", 
-		                "url": sSource, 
-		                "data": aoData, 
+		                "dataType": 'json',
+		                "type": "POST",
+		                "url": sSource,
+		                "data": aoData,
 		                "success": fnCallback
 		            } );
 		        }
 			}
         );
 
-    	$('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');        
+    	$('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
 
+        /*
 		$('.dataTable tbody td .expander').live( 'click', function () {
 
 		    var nTr = $(this).parents('tr')[0];
 		    if ( oTable.fnIsOpen(nTr) )
 		    {
-		        /* This row is already open - close it */
-		        //this.src = "../examples_support/details_open.png";
 		        oTable.fnClose( nTr );
 		    }
 		    else
 		    {
-		        /* Open this row */
-		        //this.src = "../examples_support/details_close.png";
 		        oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details-expand' );
 		    }
-		} );        
+		} );
 
+        */
 		//header search
 
 		$('thead input.filter').keyup( function () {
@@ -326,11 +324,11 @@
 		} );
 
 		eldatetime = $('.datetimepickersearch').datetimepicker({
-			maskInput: false, 
+			maskInput: false,
 		});
 
 		eldate = $('.datepickersearch').datetimepicker({
-			maskInput: false, 
+			maskInput: false,
 			pickTime: false
 		});
 
@@ -366,7 +364,7 @@
 			$('thead input').val('');
 		});
 		/*
-		 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+		 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
 		 * the footer
 		 */
 		/*
@@ -375,7 +373,7 @@
 		} );
 
 		$('thead input.filter').focus( function () {
-			
+
 			console.log(this);
 
 			if ( this.className == 'search_init' )
@@ -393,7 +391,7 @@
 				this.value = asInitVals[$('thead input').index(this)];
 			}
 		} );
-			
+
 		*/
 
 		$('#select_all').click(function(){
@@ -404,7 +402,7 @@
 			}
 		});
 
-		$(".selectorAll").live("click", function(){
+		$(".selectorAll").on("click", function(){
 			var id = $(this).attr("id");
 			if($(this).is(':checked')){
 				$('.selector_'+id).attr('checked', true);
@@ -412,7 +410,7 @@
 				$('.selector_'+id).attr('checked', false);
 			}
 		});
-		
+
 
 		$('#confirmdelete').click(function(){
 
@@ -420,7 +418,7 @@
 				if(data.status == 'OK'){
 					//redraw table
 
-					
+
 					oTable.fnStandingRedraw();
 
 					$('#delstatusindicator').html('Payment status updated');
@@ -441,14 +439,14 @@
 
 		$('table.dataTable').click(function(e){
 
-			if ($(e.target).is('._del')) {
+			if ($(e.target).is('.del')) {
 				var _id = e.target.id;
 				var answer = confirm("Are you sure you want to delete this item ?");
 				if (answer){
 					$.post('{{ URL::to($ajaxdel) }}',{'id':_id}, function(data) {
 						if(data.status == 'OK'){
 							//redraw table
-							
+
 							oTable.fnStandingRedraw();
 							alert("Item id : " + _id + " deleted");
 						}
@@ -543,76 +541,43 @@
 
 		   	}
 
-		   	
+
 
 		   	if ($(e.target).is('.viewform')) {
-				
+
 				var _id = e.target.id;
 				var _rel = $(e.target).attr('rel');
 				var url = '{{ URL::to('/')  }}' + '/exhibitor/' + _rel + '/' + _id;
-				
+
 
 				//var url = $(this).attr('url');
 			    //var modal_id = $(this).attr('data-controls-modal');
 			    $("#viewformModal .modal-body").load(url);
-				
-				
+
+
 				$('#viewformModal').modal();
 
 		   	}
 
 		   	if ($(e.target).is('.editform')) {
-				
+
 				var _id = e.target.id;
 				var _rel = $(e.target).attr('rel');
 				var url = '{{ URL::to('/')  }}' + '/exhibitor/' + _rel + '/' + _id;
-				
+
 
 				//var url = $(this).attr('url');
 			    //var modal_id = $(this).attr('data-controls-modal');
 			    setTimeout(function() {
 				    $("#editformModal .modal-body").load(url);
 				}, 1000);
-			    
-				
-				
+
+
+
 				$('#editformModal').modal();
 
 		   	}
 
-
-		   	if ($(e.target).is('.fillform')) {
-				
-				var _id = e.target.id;
-				var _rel = $(e.target).attr('rel');
-				var url = '{{ URL::to('/')  }}' + '/exhibitor/' + _rel + '/' + _id;
-				
-
-				//var url = $(this).attr('url');
-			    //var modal_id = $(this).attr('data-controls-modal');
-			    setTimeout(function() {
-				    $("#editformModal .modal-body").load(url);
-				}, 1000);
-			    
-				
-				
-				$('#editformModal').modal();
-
-		   	}
-
-		   	
-
-
-
-			if ($(e.target).is('.del')) {
-				var _id = e.target.id;
-
-				current_del_id = _id;
-
-				$('#deleteWarning').modal({
-					keyboard:true
-				});
-		   	}
 
 			if ($(e.target).is('.pop')) {
 				var _id = e.target.id;
@@ -626,55 +591,9 @@
 
 		   	}
 
-		   	/*if ($(e.target).is('.viewform')) {
-				var _id = e.target.id;
-				var _rel = $(e.target).attr('rel');
-
-				$.fancybox({
-					type:'iframe',
-					href: '{{ URL::to('/')  }}' + '/' + _rel + '/' + _id,
-					autosize: true
-				});
-
-		   	}*/	
-
-			if ($(e.target).is('.fileview')) {
-				var _id = e.target.id;
-
-				console.log(e);
-
-				$.fancybox({
-					type:'iframe',
-					href: '{{ URL::to('/') .'/storage/' }}' + _id + '/' + e.target.innerHTML,
-					autosize: true
-				});
-
-		   	}		   			   	
-
-			if ($(e.target).is('.metaview')) {
-				var doc_id = e.target.id;
-
-				$.fancybox({
-					type:'iframe',
-					href: '{{ URL::to("document/view/") }}' + doc_id,
-					autosize: true
-				});
-			}
-
-			if ($(e.target).is('.approvalview')) {
-				var doc_id = e.target.id;
-
-				$.fancybox({
-					type:'iframe',
-					width:'1000',
-					href: '{{ URL::to("document/approve/") }}' + doc_id,
-					autosize: false
-				});
-			}
-
 		});
 
-		
+
 
     });
   </script>

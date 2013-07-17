@@ -7,11 +7,11 @@ class EventsController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
-		$this->model = new Product();
+		$this->model = new Events();
 
 	}
 
@@ -20,16 +20,12 @@ class EventsController extends AdminController {
 	{
 
 		$this->heads = array(
-			array('Brand',array('search'=>true,'sort'=>true)),
-			array('Collection',array('search'=>true,'sort'=>true)),
-			array('Trade Name',array('search'=>true,'sort'=>true)),
-			array('Product',array('search'=>true,'sort'=>true)),
-			array('Model No.',array('search'=>true,'sort'=>true)),
-			array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
-			array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
-			array('Tags',array('search'=>true,'sort'=>true)),
-			array('HTags',array('search'=>true,'sort'=>true)),
-			array('Price',array('search'=>true,'sort'=>true)),
+			array('Event Title',array('search'=>true,'sort'=>true)),
+			array('Description',array('search'=>true,'sort'=>true)),
+            array('Event Owner',array('search'=>true,'sort'=>true)),
+			array('Start Date',array('search'=>true,'sort'=>true)),
+			array('End Date',array('search'=>true,'sort'=>true)),
+			array('Opening Hours',array('search'=>true,'sort'=>true)),
 			array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
 			array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
 		);
@@ -40,19 +36,15 @@ class EventsController extends AdminController {
 
 	public function postIndex()
 	{
-		$this->model = LMongo::collection('products');
+		$this->model = LMongo::collection('events');
 
 		$this->fields = array(
-			array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-			array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+			array('eventTitle',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+			array('eventDescription',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('eventOwner',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+			array('startDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+			array('endDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+			array('openingHours',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
 			array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
 		);
@@ -64,9 +56,14 @@ class EventsController extends AdminController {
 	{
 
 		$this->validator = array(
-		    'brandName' => array('Brand Name','required'),
-		    'productName'=> 'required'
+		    'eventTitle' => 'required',
+		    'eventDescription'=> 'required'
 	    );
+
+        $data = Input::get();
+
+        $data['startDate'] = new MongoDate(strtotime($data['startDate']));
+        $data['endDate'] = new MongoDate(strtotime($data['endDate']));
 
 		return parent::postAdd($data);
 	}
@@ -74,8 +71,8 @@ class EventsController extends AdminController {
 	public function postEdit($id,$data = null)
 	{
 		$this->validator = array(
-		    'brandName' => 'required',
-		    'productName'=> 'required'
+            'eventTitle' => 'required',
+            'eventDescription'=> 'required'
 	    );
 
 		return parent::postEdit($id,$data);
@@ -83,8 +80,8 @@ class EventsController extends AdminController {
 
 	public function makeActions($data)
 	{
-		$delete = '<a class="action icon-"><i>&#xe001;</i><span class="del" id="'.$data['_id'].'" >Delete</span>';
-		$edit =	'<a class="icon-"  href="'.URL::to('products/edit/'.$data['_id']).'"><i>&#xe164;</i><span>Update Product</span>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<a href="'.URL::to('events/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
 
 		$actions = $edit.$delete;
 		return $actions;

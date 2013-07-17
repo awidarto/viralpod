@@ -1,8 +1,8 @@
-.btn-primary:hover, 
-.btn-primary:focus, 
-.btn-primary:active, 
-.btn-primary.active, 
-.btn-primary.disabled, 
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
 .btn-primary[disabled]
 {
 	background-color: maroon;
@@ -13,7 +13,9 @@ input, textarea, .uneditable-input{
 }
 
 textarea{
-	min-height: 100px;
+	min-height: 150px;
+	padding: 4px 4px;
+    width: 100%;
 }
 
 .styled-select{
@@ -75,18 +77,18 @@ textarea{
 	background-color: #f7f7f7;
 }
 .search_init {
-	width: 100px;	
+	width: 100px;
 }
 
 .search_init:focus {
-	width: 150px;	
+	width: 150px;
 }
 
 
 thead #searchinput td{
 	padding: 7px 5px;
 	min-height: 0;
-	
+
 }
 
 thead .add-on{
@@ -96,4 +98,8 @@ thead .add-on{
 #clearsearch{
 	display: block;
 	margin-top: 14px;
+}
+
+#wysihtml5-toolbar{
+    padding-left: 180px;
 }

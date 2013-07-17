@@ -118,7 +118,11 @@ return array(
 		'MongoAuth\Reminders\ReminderServiceProvider',
 		'Atticmedia\Anvard\AnvardServiceProvider',
 		'Former\FormerServiceProvider',
-		'Noherczeg\Breadcrumb\BreadcrumbServiceProvider'
+		'Noherczeg\Breadcrumb\BreadcrumbServiceProvider',
+        'Intervention\Validation\ValidationServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
+        'Intervention\Helper\DateServiceProvider',
+        'Intervention\Helper\StringServiceProvider'
 	),
 
 	/*
@@ -186,7 +190,11 @@ return array(
 		'LMongo'          => 'LMongo\Facades\LMongo',
 		'EloquentMongo'   => 'LMongo\Eloquent\Model',
 		'Former'          => 'Former\Facades\Illuminate',
-		'Breadcrumb'      => 'Noherczeg\Breadcrumb\Facades\Breadcrumb'
+		'Breadcrumb'      => 'Noherczeg\Breadcrumb\Facades\Breadcrumb',
+        'ImageWorkshop'   => 'PHPImageWorkshop\ImageWorkshop',
+        'Date'            => 'Intervention\Helper\Facades\Date',
+        'String'          => 'Intervention\Helper\Facades\String',
+        'Image'           => 'Intervention\Image\Facades\Image'
 	),
 
 );

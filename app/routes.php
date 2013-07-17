@@ -17,6 +17,7 @@ Route::controller('administrators', 'AdministratorsController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('projects', 'ProjectsController');
 Route::controller('events', 'EventsController');
+Route::controller('upload', 'UploadController');
 
 Route::get('/', function()
 {
@@ -64,7 +65,7 @@ Route::post('login',function(){
         return Redirect::to('login')
             ->with('login_errors', true);
         // pass any error notification you want
-        // i like to do it this way  
+        // i like to do it this way
     }
 
 });
@@ -126,7 +127,7 @@ Route::filter('auth', function()
         Session::put('redirect',URL::full());
         return Redirect::to('login');
     }
-    
+
     if($redirect = Session::get('redirect')){
         Session::forget('redirect');
         return Redirect::to($redirect);

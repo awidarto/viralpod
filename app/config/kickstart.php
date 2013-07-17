@@ -1,11 +1,15 @@
-<?php 
+<?php
 return array(
   'storage'=>'public/storage/',
   'storageExhibitor'=>'public/storage/operationalforms/',
   'avatarstorage'=>'public/avatar/',
   'photostorage'=>'public/employees/',
   'currencies'=>array( 'IDR'=>'IDR','USD'=>'USD','SGD'=>'SGD','EU'=>'EU','AUD'=>'AUD'),
-  'roles'=>array( 
+  'adminroles'=> array(
+        'root'=>'Root User',
+        'superuser'=>'Superuser'
+    ),
+  'roles'=>array(
   		'root'=>'Root User',
   		'super'=>'Super User',
   		'outdoor_sales'=>'Outdoor Sales',
@@ -28,7 +32,7 @@ return array(
   		'subcon'=>'3rd Party / Sub-Con'
   		),
   'access'=>array( 'all'=>'all','restrict'=>'restrict','client'=>'client','vendor'=>'vendor'),
-  'doc_type'=>array( 
+  'doc_type'=>array(
   		'General'=>array(
 	 		'references'=>'References',
 			'correspondences'=>'Correspondences',
@@ -152,7 +156,7 @@ return array(
     'actionselectionexhibitor'=>array(
       'none'=>'none',
       'exhibitor.regsuccess'=>'Send Registration Email'
-      
+
 
     ),
 
@@ -160,6 +164,6 @@ return array(
 
     'paymentgw_url'=>'http://dyandratiket.com/get_data.php',
 
-    'payment_host'=>'dyandratiket.com',    
+    'payment_host'=>'dyandratiket.com',
 
 );

@@ -17,6 +17,9 @@
         {{ Former::select('countryOfOrigin')->options(Config::get('country.countries'))->label('Country of Origin') }}
         {{ Former::text('modelNo','Model No.') }}
         {{ Former::text('collectionName','Collection Name') }}
+
+        {{ View::make('partials.editortoolbar')->render() }}
+
         {{ Former::textarea('ecoFriendly','Eco-friendly') }}
         {{ Former::text('designedBy','Designed by') }}
         {{ Former::text('madeBy','Made by') }}
@@ -56,7 +59,7 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    
+
     $('select').select2({
       width : 'resolve'
     });

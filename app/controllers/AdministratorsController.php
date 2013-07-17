@@ -7,7 +7,7 @@ class AdministratorsController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
@@ -46,6 +46,37 @@ class AdministratorsController extends AdminController {
 
 		return parent::postIndex();
 	}
+
+    public function postAdd($data = null)
+    {
+
+        $this->validator = array(
+            'fullname' => 'required',
+            'username'=> 'required|email',
+            'password'=> 'required|same:repeatpassword'
+        );
+
+        return parent::postAdd($data);
+    }
+
+    public function postEdit($id,$data = null)
+    {
+        $this->validator = array(
+            'fullname' => 'required'
+        );
+
+        return parent::postEdit($id,$data);
+    }
+
+    public function makeActions($data)
+    {
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<a href="'.URL::to('administrators/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
+
+        $actions = $edit.'<br />'.$delete;
+        return $actions;
+    }
+
 
 
 }
