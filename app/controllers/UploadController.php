@@ -95,7 +95,7 @@ class UploadController extends Controller {
 
         $destinationPath = 'public/storage/temp/'.$rstring;
 
-        mkdir( realpath('public/storage/temp/').$rstring  );
+        mkdir( realpath($destinationPath ));
 
         $filename = $file->getClientOriginalName();
         $filemime = $file->getMimeType();
