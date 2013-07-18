@@ -93,13 +93,7 @@ class UploadController extends Controller {
 
         $rstring = str_random(8);
 
-        $destinationPath = 'public/storage/temp/'.$rstring;
-
-        $destinationPath = realpath($destinationPath);
-
-        print $destinationPath;
-
-        exit();
+        $destinationPath = realpath('storage/temp').'/'.$rstring;
 
         $filename = $file->getClientOriginalName();
         $filemime = $file->getMimeType();
@@ -118,8 +112,9 @@ class UploadController extends Controller {
 
         if($uploadSuccess){
             $fileitems[] = array(
-                    'url'=> URL::to('public/storage/temp/'.$rstring.'/'.$filename),
-                    'thumbnail_url'=> URL::to('public/storage/temp/'.$rstring.'/th_'.$filename),
+                    'url'=> URL::to('storage/temp/'.$rstring.'/'.$filename),
+                    'thumbnail_url'=> URL::to('storage/temp/'.$rstring.'/th_'.$filename),
+                    'temp_dir'=> $destinationPath,
                     'name'=> $filename,
                     'type'=> $filemime,
                     'size'=> $filesize,
