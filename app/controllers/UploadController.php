@@ -95,8 +95,6 @@ class UploadController extends Controller {
 
         $destinationPath = 'public/storage/temp/'.$rstring;
 
-        print realpath($destinationPath );
-
         $filename = $file->getClientOriginalName();
         $filemime = $file->getMimeType();
         $filesize = $file->getSize();
@@ -104,7 +102,7 @@ class UploadController extends Controller {
 
         $filename = str_replace(Config::get('kickstart.invalidchars'), '-', $filename);
 
-        $uploadSuccess = $file->move($destinationPath, $filename);
+        $uploadSuccess = $file->move(realpath($destinationPath), $filename);
 
         $thumbnail = Image::make($destinationPath.'/'.$filename)
             ->grab(320,240)
