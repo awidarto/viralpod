@@ -99,10 +99,12 @@ class UploadController extends Controller {
         $filesize = $file->getSize();
         $extension =$file->getClientOriginalExtension(); //if you need extension of the file
 
+        $filename = str_replace(Config::get('kickstart.invalidchars'), '-', $filename);
+
         $uploadSuccess = $file->move($destinationPath, $filename);
 
-        $thubnail = Image::make($destinationPath.'/'.$filename)
-            ->resize(150,75)
+        $thumbnail = Image::make($destinationPath.'/'.$filename)
+            ->grab(320,240)
             ->save($destinationPath.'/th_'.$filename);
 
         $fileitems = array();
