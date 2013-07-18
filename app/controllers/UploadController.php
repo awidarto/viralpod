@@ -97,6 +97,10 @@ class UploadController extends Controller {
 
         $destinationPath = realpath($destinationPath);
 
+        print $destinationPath;
+
+        exit();
+
         $filename = $file->getClientOriginalName();
         $filemime = $file->getMimeType();
         $filesize = $file->getSize();
