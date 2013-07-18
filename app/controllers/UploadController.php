@@ -94,6 +94,9 @@ class UploadController extends Controller {
         $rstring = str_random(8);
 
         $destinationPath = 'public/storage/temp/'.$rstring;
+
+        mkdir( $destinationPath );
+
         $filename = $file->getClientOriginalName();
         $filemime = $file->getMimeType();
         $filesize = $file->getSize();
