@@ -64,7 +64,7 @@ class ProductsController extends AdminController {
 	{
 
 		$this->validator = array(
-		    'brandName' => array('Brand Name','required'),
+		    'brandName' => 'required',
 		    'productName'=> 'required'
 	    );
 

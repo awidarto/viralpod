@@ -40,7 +40,94 @@
                     <div class="bar"></div>
                 </div>
                 <br />
-                <div id="files" class="files"><ul></ul></div>
+                <div id="files" class="files">
+                    <ul>
+                        <?php
+
+                            if( isset($formdata['filename']) ){
+
+                                $filename = $formdata['filename'];
+                                $thumbnail_url = $formdata['thumbnail_url'];
+
+                                $thumb = '<li><img src="%s"></li><br /><span class="img-title">%s</span>';
+
+                                for($t = 0; $t < count($filename);$t++){
+                                    printf($thumb,$thumbnail_url[$t],$filename[$t]);
+                                }
+
+                            }
+                        ?>
+                        <?php
+                            $allin = Input::old();
+                            $showold = false;
+
+                            if( count($allin) > 0){
+                                $showold = true;
+                            }
+
+                            if($showold && isset( $allin['thumbnail_url'])){
+
+                                $filename = $allin['filename'];
+                                $thumbnail_url = $allin['thumbnail_url'];
+
+                                $thumb = '<li><img src="%s"></li><br /><span class="img-title">%s</span>';
+
+                                for($t = 0; $t < count($filename);$t++){
+                                    printf($thumb,$thumbnail_url[$t],$filename[$t]);
+                                }
+
+                            }
+                        ?>
+                    </ul>
+                </div>
+                <div id="uploadedform">
+                    <?php
+
+                        if(isset( $formdata['filename'] )){
+
+                            $count = 0;
+                            $upcount = count($formdata['filename']);
+
+                            $upl = '';
+                            for($u = 0; $u < $upcount; $u++){
+                                $upl .= '<input type="hidden" name="delete_type[]" value="' . $formdata['delete_type'][$u] . '">';
+                                $upl .= '<input type="hidden" name="delete_url[]" value="' . $formdata['delete_url'][$u] . '">';
+                                $upl .= '<input type="hidden" name="filename[]" value="' . $formdata['filename'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="filesize[]" value="' . $formdata['filesize'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="temp_dir[]" value="' . $formdata['temp_dir'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $formdata['thumbnail_url'][$u] . '">';
+                                $upl .= '<input type="hidden" name="filetype[]" value="' . $formdata['filetype'][$u] . '">';
+                                $upl .= '<input type="hidden" name="fileurl[]" value="' . $formdata['fileurl'][$u] . '">';
+                            }
+
+                            print $upl;
+                        }
+
+                    ?>
+                    <?php
+
+                        if($showold && isset( $allin['filename'] )){
+
+                            $count = 0;
+                            $upcount = count($allin['filename']);
+
+                            $upl = '';
+                            for($u = 0; $u < $upcount; $u++){
+                                $upl .= '<input type="hidden" name="delete_type[]" value="' . $allin['delete_type'][$u] . '">';
+                                $upl .= '<input type="hidden" name="delete_url[]" value="' . $allin['delete_url'][$u] . '">';
+                                $upl .= '<input type="hidden" name="filename[]" value="' . $allin['filename'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="filesize[]" value="' . $allin['filesize'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="temp_dir[]" value="' . $allin['temp_dir'][$u]  . '">';
+                                $upl .= '<input type="hidden" name="thumbnail_url[]" value="' . $allin['thumbnail_url'][$u] . '">';
+                                $upl .= '<input type="hidden" name="filetype[]" value="' . $allin['filetype'][$u] . '">';
+                                $upl .= '<input type="hidden" name="fileurl[]" value="' . $allin['fileurl'][$u] . '">';
+                            }
+
+                            print $upl;
+                        }
+
+                    ?>
+                </div>
             </div>
         </div>
 
@@ -78,7 +165,7 @@
 
 $(document).ready(function() {
 
-    var url = '{{ URL::to('upload/edit') }}';
+    var url = '{{ URL::to('upload') }}';
 /*
     $('#fileupload').fileupload({
         url: url,
@@ -153,9 +240,26 @@ $(document).ready(function() {
         url: url,
         dataType: 'json',
         done: function (e, data) {
+            $('#progress .bar').css(
+                'width',
+                '0%'
+            );
+
             $.each(data.result.files, function (index, file) {
-                var thumb = '<li><img src="' + file.thumbnail_url + '" /><br />' + file.name + '</li>';
+                var thumb = '<li><img src="' + file.thumbnail_url + '" /><br /><span class="img-title">' + file.name + '</span></li>';
                 $(thumb).appendTo('#files ul');
+
+                var upl = '<input type="hidden" name="delete_type[]" value="' + file.delete_type + '">';
+                upl += '<input type="hidden" name="delete_url[]" value="' + file.delete_url + '">';
+                upl += '<input type="hidden" name="filename[]" value="' + file.name  + '">';
+                upl += '<input type="hidden" name="filesize[]" value="' + file.size  + '">';
+                upl += '<input type="hidden" name="temp_dir[]" value="' + file.temp_dir  + '">';
+                upl += '<input type="hidden" name="thumbnail_url[]" value="' + file.thumbnail_url + '">';
+                upl += '<input type="hidden" name="filetype[]" value="' + file.type + '">';
+                upl += '<input type="hidden" name="fileurl[]" value="' + file.url + '">';
+
+                $(upl).appendTo('#uploadedform');
+
             });
         },
         progressall: function (e, data) {
@@ -164,10 +268,6 @@ $(document).ready(function() {
                 'width',
                 progress + '%'
             );
-
-            if(progress == 100){
-                $('#progress .bar').css('width','0%');
-            }
         }
     })
     .prop('disabled', !$.support.fileInput)

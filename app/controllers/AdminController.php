@@ -473,7 +473,7 @@ class AdminController extends Controller {
 
 	    if($validation->fails()){
 
-	    	return Redirect::to($controller_name.'/edit/'.$id)->withErrors($validation);
+	    	return Redirect::to($controller_name.'/edit/'.$id)->withInput(Input::all())->withErrors($validation);
 	    	//->with_input(Input::all());
 
 	    }else{
