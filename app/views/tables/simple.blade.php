@@ -285,8 +285,8 @@
 
     	$('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
 
-        /*
-		$('.dataTable tbody td .expander').live( 'click', function () {
+
+		$('.dataTable tbody td .expander').on( 'click', function () {
 
 		    var nTr = $(this).parents('tr')[0];
 		    if ( oTable.fnIsOpen(nTr) )
@@ -299,7 +299,7 @@
 		    }
 		} );
 
-        */
+
 		//header search
 
 		$('thead input.filter').keyup( function () {

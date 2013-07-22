@@ -30,14 +30,18 @@ return array(
 		),
 
 	'main_categories'=>array(
-			'surface'=>'Surface',
-			'finishes'=>'Finishes'
+            'Finishes'=>'Finishes',
+            'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',
+            'Structure'=>'Structure',
+            'Furniture'=>'Furniture'
 		),
 
 	'search_main_categories'=>array(
-			''=>'All',
-			'surface'=>'Surface',
-			'finishes'=>'Finishes'
+            ''=>'All',
+            'Finishes'=>'Finishes',
+            'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',
+            'Structure'=>'Structure',
+            'Furniture'=>'Furniture'
 		),
 
 	'cartstatus'=>array(

@@ -20,10 +20,11 @@ class ProductsController extends AdminController {
 	{
 
 		$this->heads = array(
+            array('Product',array('search'=>true,'sort'=>true)),
+            array('Images',array('search'=>false,'sort'=>false)),
 			array('Brand',array('search'=>true,'sort'=>true)),
 			array('Collection',array('search'=>true,'sort'=>true)),
 			array('Trade Name',array('search'=>true,'sort'=>true)),
-			array('Product',array('search'=>true,'sort'=>true)),
 			array('Model No.',array('search'=>true,'sort'=>true)),
 			array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
 			array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
@@ -43,10 +44,11 @@ class ProductsController extends AdminController {
 		$this->model = LMongo::collection('products');
 
 		$this->fields = array(
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
 			array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
 			array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-			array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
 			array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -92,10 +94,26 @@ class ProductsController extends AdminController {
 
 	public function namePic($data)
 	{
-		$name = HTML::link('products/view/'.$data['_id'],$data['name']);
-		$display = HTML::image(URL::to('/').'/storage/products/'.$data['_id'].'/sm_pic0'.$data['defaultpic'].'.jpg?'.time(), 'sm_pic01.jpg', array('id' => $data['_id']));
-		return $display.'<br />'.$name;
+		$name = HTML::link('products/view/'.$data['_id'],$data['productName']);
+        if(isset($data['thumbnail_url']) && count($data['thumbnail_url'])){
+            $display = HTML::image($data['thumbnail_url'][0].'?'.time(), $data['filename'][0], array('id' => $data['_id']));
+            return $display.'<br />'.$name;
+        }else{
+            return $name;
+        }
 	}
+
+    public function pics($data)
+    {
+        $name = HTML::link('products/view/'.$data['_id'],$data['productName']);
+        if(isset($data['thumbnail_url']) && count($data['thumbnail_url'])){
+            $display = HTML::image($data['thumbnail_url'][0].'?'.time(), $data['filename'][0], array('style'=>'min-width:100px;','id' => $data['_id']));
+            return $display.'<br /><span class="img-more" id="'.$data['_id'].'">more images</span>';
+        }else{
+            return $name;
+        }
+    }
+
 
 
 }

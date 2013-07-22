@@ -34,7 +34,7 @@
         {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
 
 
-        {{ Former::select('productCategory','Category')->options(Config::get('se.product_categories')) }}
+        {{ Former::text('productCategory','Category') }}
         {{ Former::textarea('availableColours','Avail. Colours') }}
         {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
         {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}

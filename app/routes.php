@@ -18,6 +18,7 @@ Route::controller('companies', 'CompaniesController');
 Route::controller('projects', 'ProjectsController');
 Route::controller('events', 'EventsController');
 Route::controller('upload', 'UploadController');
+Route::controller('ajax', 'AjaxController');
 
 Route::get('/', function()
 {

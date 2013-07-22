@@ -7,7 +7,7 @@ class MembersController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
@@ -47,5 +47,14 @@ class MembersController extends AdminController {
 		return parent::postIndex();
 	}
 
+    public function makeActions($data)
+    {
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<a href="'.URL::to('members/edit/'.$data['_id']).'"><i class="icon-edit"></i>Update</a>';
+        $addcompany = '<a href="'.URL::to('companies/add/'.$data['_id']).'"><i class="icon-edit"></i>Add Company</a>';
+
+        $actions = $edit.'<br />'.$delete.'<br />'.$addcompany;
+        return $actions;
+    }
 
 }

@@ -7,11 +7,11 @@ class CompaniesController extends AdminController {
 		parent::__construct();
 
 		$this->controller_name = str_replace('Controller', '', get_class());
-		
+
 		//$this->crumb = new Breadcrumb();
 		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
 
-		$this->model = new Member();
+		$this->model = new Company();
 
 	}
 
@@ -33,7 +33,7 @@ class CompaniesController extends AdminController {
 
 	public function postIndex()
 	{
-		$this->model = LMongo::collection('users');
+		$this->model = LMongo::collection('companies');
 
 		$this->fields = array(
 			array('fullname',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),

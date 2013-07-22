@@ -10,7 +10,6 @@
 <div class="row">
     <div class="span6">
 
-        {{ Former::select('mainCategory','Main Category')->options(Config::get('se.main_categories')) }}
         {{ Former::text('brandName','Brand Name') }}
         {{ Former::text('shopCategory','Shop Category') }}
         {{ Former::text('tradeName','Trade Name') }}
@@ -57,10 +56,24 @@
                                 $filename = $allin['filename'];
                                 $thumbnail_url = $allin['thumbnail_url'];
 
-                                $thumb = '<li><img src="%s"></li><br /><span class="img-title">%s</span>';
+                                $thumb = '<li><img src="%s"><br /><input type="radio" name="defaultpic" value="%s" %s > Default<br />';
+                                $thumb .= '<span class="img-title">%s</span>';
+                                $thumb .= '<label for="colour">Colour</label><input type="text" name="colour[]" value="%s"  />';
+                                $thumb .= '<label for="material">Material & Finish</label><input type="text" name="material[]" value="%s"  />';
+                                $thumb .= '<label for="tags">Tags</label><input type="text" name="tag[]" value="%s"  /></li>';
 
                                 for($t = 0; $t < count($filename);$t++){
-                                    printf($thumb,$thumbnail_url[$t],$filename[$t]);
+                                    if($allin['defaultpic'] == $filename[$t]){
+                                        $isdef = 'checked="checked"';
+                                    }else{
+                                        $isdef = ' ';
+                                    }
+
+                                    printf($thumb,$thumbnail_url[$t],
+                                        $filename[$t],
+                                        $isdef,
+                                        $filename[$t],
+                                        $allin['colour'][$t],$allin['material'][$t],$allin['tag'][$t]);
                                 }
 
                             }
@@ -100,12 +113,19 @@
         {{ Former::text('productName','Product Name') }}
         {{ Former::textarea('productProperties','Properties') }}
 
-        {{ Former::select('productApplication[]')->options(Config::get('se.applications'))->multiple(true)->label('Application') }}
-        {{ Former::select('productSystem[]')->options(Config::get('se.systems'))->name('productSystem')->multiple(true)->label('System') }}
-        {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
+        {{ Former::select('mainCategory','Main Category')->options(Config::get('se.main_categories'))->id('mainCategory') }}
+        <div id="productApplication">
+            {{ Former::select('productApplication[]')->options(Config::get('se.applications'))->multiple(true)->label('Application') }}
+        </div>
+        <div id="productSystem">
+            {{ Former::select('productSystem[]')->options(Config::get('se.systems'))->name('productSystem')->multiple(true)->label('System') }}
+        </div>
+        <div id="productFunction">
+            {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
+        </div>
 
 
-        {{ Former::select('productCategory','Category')->options(Config::get('se.product_categories')) }}
+        {{ Former::text('productCategory','Category') }}
         {{ Former::textarea('availableColours','Avail. Colours') }}
         {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
         {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}
@@ -128,87 +148,45 @@
 
 $(document).ready(function() {
 
+    function setVisibleOptions(){
+        var mc = $('#mainCategory').val();
+
+        console.log(mc);
+
+        if( mc == 'Structure'){
+            $('#productFunction').hide();
+            $('#productSystem').show();
+            $('#productApplication').hide();
+        }else if( mc == 'Furniture'){
+            $('#productFunction').show();
+            $('#productSystem').hide();
+            $('#productApplication').hide();
+        }else{
+            $('#productFunction').hide();
+            $('#productSystem').hide();
+            $('#productApplication').show();
+        }
+
+    }
+
+    setVisibleOptions();
+
     $('select').select2({
       width : 'resolve'
     });
 
     var url = '{{ URL::to('upload') }}';
-/*
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        autoUpload: false,
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        maxFileSize: 15000000, // 5 MB
-        // Enable image resizing, except for Android and Opera,
-        // which actually support image resizing, but fail to
-        // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator.userAgent),
-        previewMaxWidth: 100,
-        previewMaxHeight: 100,
-        previewCrop: true
-    }).on('fileuploadadd', function (e, data) {
-        data.context = $('<div/>').appendTo('#files');
-        $.each(data.files, function (index, file) {
-            var node = $('<p/>')
-                    .append($('<span/>').text(file.name));
-            if (!index) {
-                node
-                    .append('<br>')
-                    .append(uploadButton.clone(true).data(data));
-            }
-            node.appendTo(data.context);
-        });
-    }).on('fileuploadprocessalways', function (e, data) {
-        var index = data.index,
-            file = data.files[index],
-            node = $(data.context.children()[index]);
-        if (file.preview) {
-            node
-                .prepend('<br>')
-                .prepend(file.preview);
-        }
-        if (file.error) {
-            node
-                .append('<br>')
-                .append(file.error);
-        }
-        if (index + 1 === data.files.length) {
-            data.context.find('button')
-                .text('Upload')
-                .prop('disabled', !!data.files.error);
-        }
-    }).on('fileuploadprogressall', function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress .bar').css(
-            'width',
-            progress + '%'
-        );
-    }).on('fileuploaddone', function (e, data) {
-        $.each(data.result.files, function (index, file) {
-            var link = $('<a>')
-                .attr('target', '_blank')
-                .prop('href', file.url);
-            $(data.context.children()[index])
-                .wrap(link);
-        });
-    }).on('fileuploadfail', function (e, data) {
-        $.each(data.result.files, function (index, file) {
-            var error = $('<span/>').text(file.error);
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
-        });
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-*/
+
     $('#fileupload').fileupload({
         url: url,
         dataType: 'json',
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
-                var thumb = '<li><img src="' + file.thumbnail_url + '" /><br /><span class="img-title">' + file.name + '</span></li>';
+                var thumb = '<li><img src="' + file.thumbnail_url + '" /><br /><input type="radio" name="defaultpic" value="' + file.name + '"> Default<br /><span class="img-title">' + file.name + '</span>' +
+                '<label for="colour">Colour</label><input type="text" name="colour[]" />' +
+                '<label for="material">Material & Finish</label><input type="text" name="material[]" />' +
+                '<label for="tags">Tags</label><input type="text" name="tag[]" />' +
+                '</li>';
                 $(thumb).appendTo('#files ul');
 
                 var upl = '<input type="hidden" name="delete_type[]" value="' + file.delete_type + '">';
@@ -289,7 +267,9 @@ $(document).ready(function() {
         return false;
     });
 
-
+    $('#mainCategory').change(function(){
+        setVisibleOptions();
+    });
 
 });
 
