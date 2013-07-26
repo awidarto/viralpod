@@ -25,7 +25,7 @@ Route::get('/', function()
     if(Auth::guest()){
         return Redirect::to('login');
     }else{
-        return Redirect::to('dashboard');
+        return Redirect::to('companies');
     }
 });
 
