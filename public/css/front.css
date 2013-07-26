@@ -240,3 +240,24 @@ span.img-title{
     border:thin solid maroon;
     width:100px;
 }
+
+dl {
+    margin-bottom:15px;
+}
+
+dl dt {
+    background:#5f9be3;
+    color:#fff;
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px;
+    width:150px;
+}
+
+dl dd {
+    margin:2px 0;
+    margin-left:170px;
+    margin-right:0px;
+    padding:5px 0;
+}

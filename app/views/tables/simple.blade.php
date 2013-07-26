@@ -2,10 +2,8 @@
 
 @section('content')
 
+
 <!--<div class="tableHeader">
-	@if($title != '')
-		<h3>{{$title}}</h3>
-	@endif
 	@if(isset($addurl) && $addurl != '')
 		<a class="foundicon-add-doc button right newdoc action clearfix" href="{{URL::to($addurl)}}">&nbsp;&nbsp;<span>{{$newbutton}}</span></a>
 	@endif
@@ -13,6 +11,7 @@
 -->
 <div class="row">
 	<div class="span12 command-bar">
+        <h4>{{ $title }}</h4>
        	<a href="{{ URL::to($addurl) }}" class="btn">Add</a>
 
 	   @if (Session::has('notify_operationalform'))
@@ -25,7 +24,6 @@
 
 <div class="row">
    <div class="span12">
-
 
       <table class="table table-condensed dataTable attendeeTable">
 

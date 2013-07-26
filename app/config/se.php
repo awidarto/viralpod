@@ -15,6 +15,19 @@ return array(
 			'EURO'=>'EURO',
 			'GBP'=>'GBP'
 		),
+
+    'company_categories'=>array(
+            'Manufacturer'=>'Manufacturer',
+            'Local Distributor'=>'Local Distributor',
+            'Local Agent'=>'Local Agent'
+        ),
+    'search_company_categories'=>array(
+            ''=>'All',
+            'Manufacturer'=>'Manufacturer',
+            'Local Distributor'=>'Local Distributor',
+            'Local Agent'=>'Local Agent'
+        ),
+
 	'product_categories'=>array(
 			'Finishes'=>'Finishes',
 			'Finishes Natural Stone or Timber'=>'Finishes (Natural Stone or Timber)',

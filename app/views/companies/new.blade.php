@@ -10,35 +10,16 @@
 <div class="row">
     <div class="span6">
 
-        {{ Former::select('mainCategory','Main Category')->options(Config::get('se.main_categories')) }}
-        {{ Former::text('brandName','Brand Name') }}
-        {{ Former::text('shopCategory','Shop Category') }}
-        {{ Former::text('tradeName','Trade Name') }}
-        {{ Former::select('countryOfOrigin')->options(Config::get('country.countries'))->label('Country of Origin') }}
-        {{ Former::text('modelNo','Model No.') }}
-        {{ Former::text('collectionName','Collection Name') }}
-        {{ Former::textarea('ecoFriendly','Eco-friendly') }}
-        {{ Former::text('designedBy','Designed by') }}
-        {{ Former::text('madeBy','Made by') }}
-        {{ Former::text('priceUSD','Price ($USD)') }}
-        {{ Former::text('visibleTags','Tags (visible)')->class('tag_keyword') }}
-        {{ Former::text('hiddenTags','Tags (hidden)')->class('tag_keyword') }}
+        {{ Former::select('mainCategory','Company Category')->options(Config::get('se.company_categories')) }}
+        {{ Former::text('companyName','Company Name') }}
+        {{ Former::select('countryHQ')->options(Config::get('country.countries'))->label('Country (HQ)') }}
+        {{ Former::text('website','Website') }}
+        {{ Former::text('email','Email (Main)') }}
 
     </div>
     <div class="span6">
-        {{ Former::text('productName','Product Name') }}
-        {{ Former::textarea('productProperties','Properties') }}
-
-        {{ Former::select('productApplication[]')->options(Config::get('se.applications'))->multiple(true)->label('Application') }}
-        {{ Former::select('productSystem[]')->options(Config::get('se.systems'))->name('productSystem')->multiple(true)->label('System') }}
-        {{ Former::select('productFunction[]')->options(Config::get('se.functions'))->name('productFunction')->multiple(true)->label('Function') }}
-
-
-        {{ Former::text('productCategory','Category') }}
-        {{ Former::textarea('availableColours','Avail. Colours') }}
-        {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
-        {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}
-
+        {{ Former::text('expertise','Expertise & Skills') }}
+        {{ Former::textarea('about','About') }}
     </div>
 </div>
 
@@ -56,21 +37,22 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    /*
+
     $('select').select2({
       width : 'resolve'
     });
-    */
 
     $('#field_role').change(function(){
         //alert($('#field_role').val());
         // load default permission here
     });
 
-    var editor = new wysihtml5.Editor('bodycopy', { // id of textarea element
+    /*
+    var editor = new wysihtml5.Editor('about', { // id of textarea element
       toolbar:      'wysihtml5-toolbar', // id of toolbar element
       parserRules:  wysihtml5ParserRules // defined in parser rules set
     });
+    */
 
     $('#name').keyup(function(){
         var title = $('#name').val();

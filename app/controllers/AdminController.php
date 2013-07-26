@@ -32,6 +32,16 @@ class AdminController extends Controller {
 
 	public $title = '';
 
+    public $ajaxsource = null;
+
+    public $addurl = null;
+
+    public $rowdetail = null;
+
+    public $delurl = null;
+
+    public $newbutton = null;
+
 
 	public function __construct(){
 
@@ -57,12 +67,31 @@ class AdminController extends Controller {
 		}
 	}
 
+    public function getIndex()
+    {
+        return $this->pageGenerator();
+    }
 
-	public function getIndex(){
+    public function postIndex()
+    {
+        return $this->tableResponder();
+    }
+
+	public function pageGenerator(){
 
 		//$action_selection = Former::select( Config::get('kickstart.actionselection'))->name('action');
 
 		$heads = $this->heads;
+
+        $this->ajaxsource = (is_null($this->ajaxsource))? strtolower($this->controller_name): $this->ajaxsource;
+
+        $this->addurl = (is_null($this->addurl))? strtolower($this->controller_name).'/add': $this->addurl;
+
+        $this->rowdetail = (is_null($this->rowdetail))? strtolower($this->controller_name).'.rowdetail': $this->rowdetail;
+
+        $this->delurl = (is_null($this->delurl))? strtolower($this->controller_name).'/del': $this->delurl;
+
+        $this->newbutton = (is_null($this->newbutton))? Str::singular($this->controller_name): $this->newbutton;
 
 		$select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
 
@@ -86,21 +115,21 @@ class AdminController extends Controller {
 		$disablesort = implode(',',$disablesort);
 
 		return View::make('tables.simple')
-			->with('title',$this->title)
-			->with('newbutton', Str::singular($this->controller_name))
-			->with('disablesort',$disablesort)
-			->with('addurl',strtolower($this->controller_name).'/add')
-			->with('ajaxsource',URL::to(strtolower($this->controller_name)))
-			->with('ajaxdel',URL::to(strtolower($this->controller_name).'/del'))
-			->with('crumb',$this->crumb)
-			->with('heads',$heads)
-			->nest('row',strtolower($this->controller_name).'.rowdetail');
+			->with('title',$this->title )
+			->with('newbutton', $this->newbutton )
+			->with('disablesort',$disablesort )
+			->with('addurl',$this->addurl )
+			->with('ajaxsource',URL::to($this->ajaxsource) )
+			->with('ajaxdel',URL::to($this->delurl) )
+			->with('crumb',$this->crumb )
+			->with('heads',$heads )
+			->nest('row',$this->rowdetail );
 
 
 	}
 
 
-	public function postIndex()
+	public function tableResponder($model = null)
 	{
 
 		$fields = $this->fields;
@@ -124,7 +153,7 @@ class AdminController extends Controller {
 		$hilite = array();
 		$hilite_replace = array();
 
-		$model = $this->model;
+		$model = (is_null($model))? $this->model : $model;
 
 		$count_all = $model->count();
 
@@ -600,5 +629,9 @@ class AdminController extends Controller {
 		\Laravel\CLI\Command::run(array('notify'));
 	}
 
+    public function missingMethod($param)
+    {
+        //print_r($param);
+    }
 
 }
