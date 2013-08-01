@@ -175,15 +175,39 @@ class AjaxController extends BaseController {
     {
         $q = Input::get('term');
 
-        $user = new User();
+        $user = LMongo::collection('users');
+
         $qemail = new MongoRegex('/'.$q.'/i');
 
-        $res = $user->find(array('$or'=>array(array('email'=>$qemail),array('fullname'=>$qemail)) ));
+
+
+        $res = $user->whereRegex('username',$qemail)->orWhereRegex('fullname',$qemail)->get();
 
         $result = array();
 
         foreach($res as $r){
-            $result[] = array('id'=>$r['_id']->__toString(),'value'=>$r['email'],'email'=>$r['email'],'label'=>$r['fullname'].' ( '.$r['email'].' )','userdata'=>$r);
+            $result[] = array('id'=>$r['_id']->__toString(),'value'=>$r['username'],'email'=>$r['username'],'label'=>$r['fullname'].' ( '.$r['username'].' )','userdata'=>$r);
+        }
+
+        return Response::json($result);
+    }
+
+    public function getUserdatabyname()
+    {
+        $q = Input::get('term');
+
+        $user = LMongo::collection('users');
+
+        $qemail = new MongoRegex('/'.$q.'/i');
+
+
+
+        $res = $user->whereRegex('username',$qemail)->orWhereRegex('fullname',$qemail)->get();
+
+        $result = array();
+
+        foreach($res as $r){
+            $result[] = array('id'=>$r['_id']->__toString(),'value'=>$r['fullname'],'email'=>$r['username'],'label'=>$r['fullname'].' ( '.$r['username'].' )','userdata'=>$r);
         }
 
         return Response::json($result);

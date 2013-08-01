@@ -16,6 +16,27 @@ return array(
 			'GBP'=>'GBP'
 		),
 
+    'office_categories'=>array(
+            'Office'=>'Office',
+            'Showroom'=>'Showroom'
+        ),
+
+    'search_office_categories'=>array(
+            ''=>'All',
+            'Office'=>'Office',
+            'Showroom'=>'Showroom'
+        ),
+
+    'agent_categories'=>array(
+            'Distributor'=>'Distributor',
+            'Agent'=>'Agent'
+        ),
+    'search_agent_categories'=>array(
+            ''=>'All',
+            'Distributor'=>'Distributor',
+            'Agent'=>'Agent'
+        ),
+
     'company_categories'=>array(
             'Manufacturer'=>'Manufacturer',
             'Local Distributor'=>'Local Distributor',

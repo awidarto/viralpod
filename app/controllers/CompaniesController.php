@@ -8,8 +8,9 @@ class CompaniesController extends AdminController {
 
 		$this->controller_name = str_replace('Controller', '', get_class());
 
-		//$this->crumb = new Breadcrumb();
-		//$this->crumb->add(strtolower($this->controller_name),ucfirst($this->controller_name));
+        //$this->crumb->append($this->controller_name);
+        $this->crumb->append('Home','left',true);
+		$this->crumb->append(strtolower($this->controller_name));
 
 		$this->model = new Company();
 
@@ -68,9 +69,34 @@ class CompaniesController extends AdminController {
 
     public function getDetail($id)
     {
+
         $company = $this->model->find($id);
 
+        $this->crumb->append($company['_id']->__toString(),'right',false,$company['companyName']);
+
+        $pheads = array(
+            array('Product',array('search'=>true,'sort'=>true)),
+            array('Images',array('search'=>false,'sort'=>false)),
+            array('Brand',array('search'=>true,'sort'=>true)),
+            array('Collection',array('search'=>true,'sort'=>true)),
+            array('Trade Name',array('search'=>true,'sort'=>true)),
+            array('Model No.',array('search'=>true,'sort'=>true)),
+            array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
+            array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
+            array('Tags',array('search'=>true,'sort'=>true)),
+            array('HTags',array('search'=>true,'sort'=>true)),
+            array('Price',array('search'=>true,'sort'=>true)),
+            array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
+        );
+
+
         return View::make('companies.detail')
+            ->with('ajaxsource','products' )
+            ->with('disablesort','0,1' )
+            ->with('ajaxdel',URL::to('products/del') )
+            ->with('heads',$pheads)
+            ->with('crumb',$this->crumb)
             ->with('company',$company);
     }
 

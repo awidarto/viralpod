@@ -9,8 +9,10 @@
 	@endif
 </div>
 -->
+
 <div class="row">
 	<div class="span12 command-bar">
+
         <h4>{{ $title }}</h4>
        	<a href="{{ URL::to($addurl) }}" class="btn">Add</a>
 

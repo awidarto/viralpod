@@ -20,6 +20,8 @@
 
     {{ HTML::style('css/bootstrap-datetimepicker.min.css') }}
 
+    {{ HTML::style('css/flick/jquery-ui-1.9.2.custom.min.css') }}
+
 
 
 
@@ -124,7 +126,13 @@
 
         <!-- Begin page content -->
         <div class="container main">
-
+            @if(isset($crumb))
+            <div class="row">
+                <div class="span12">
+                    {{ $crumb->build('bootstrap', 'title', false, '//') }}
+                </div>
+            </div>
+            @endif
             @yield('content')
 
         </div>

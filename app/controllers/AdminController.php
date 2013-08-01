@@ -49,6 +49,8 @@ class AdminController extends Controller {
 
 		Former::framework($this->form_framework);
 
+        $this->crumb = new \Noherczeg\Breadcrumb\Breadcrumb(URL::to('/'));
+
 		$this->beforeFilter('auth', array('on'=>'get', 'only'=>array('getIndex','getAdd','getEdit') ));
 
 	}

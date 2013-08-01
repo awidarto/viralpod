@@ -329,22 +329,32 @@
 		$('.auto_userdatabyemail').autocomplete({
 			source: base + 'ajax/userdatabyemail',
 			select: function(event, ui){
-				$('#emp_user_id').val(ui.item.id);
-				$('#emp_fullname').val(ui.item.userdata.fullname);
+				$('#acc_user_id').val(ui.item.id);
+				$('#acc_fullname').val(ui.item.userdata.fullname);
 
-				$('#emp_jobtitle').val(ui.item.userdata.employee_jobtitle);
+				$('#acc_username').val(ui.item.userdata.username);
 
-				$('#emp_department').select2('val',ui.item.userdata.department);
+                $('#acc_designation').val(ui.item.userdata.designation);
 
-				$('#emp_mobile').val(ui.item.userdata.mobile);
-				$('#emp_phone').val(ui.item.userdata.home);
-				$('#emp_street').val(ui.item.userdata.street);
-				$('#emp_city').val(ui.item.userdata.city);
-				$('#emp_zip').val(ui.item.userdata.zip);
-
+				//$('#acc_department').select2('val',ui.item.userdata.department);
 
 			}
 		});
+
+        $('.auto_userdatabyname').autocomplete({
+            source: base + 'ajax/userdatabyname',
+            select: function(event, ui){
+                $('#acc_user_id').val(ui.item.id);
+                $('#acc_fullname').val(ui.item.userdata.fullname);
+
+                $('#acc_username').val(ui.item.userdata.username);
+
+                $('#acc_designation').val(ui.item.userdata.designation);
+
+                //$('#acc_department').select2('val',ui.item.userdata.department);
+
+            }
+        });
 
 		$('.auto_idbyemail').autocomplete({
 			source: base + 'ajax/useridbyemail',

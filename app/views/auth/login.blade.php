@@ -15,10 +15,10 @@
 
 <div class="row">
     <div class="span6 offset3" >
-        {{ Former::five_text('username')->name('username') }}
-        {{ Former::five_password('password')->name('password') }}                    
-        
-        {{ Former::actions()->primary_submit('Log In') }}
+        {{ Former::five_text('username')->name('username')->label('E-mail') }}
+        {{ Former::five_password('password')->name('password') }}
+
+        {{ Former::actions()->submit('Log In') }}
     </div>
 </div>
 
