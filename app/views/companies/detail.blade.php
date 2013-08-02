@@ -6,7 +6,22 @@
 <h4>{{$company['companyName']}}</h4>
 
 <div class="row">
-    <div class="span6">
+    <div class="span4">
+        <h6>Account Holder</h6>
+        <dl>
+            <dt>Full Name</dt>
+            <dd>{{ $company['fullname']}}</dd>
+
+            <dt>Email</dt>
+            <dd>{{ $company['username']}}</dd>
+
+            <dt>Designation</dt>
+            <dd>{{ $company['designation']}}</dd>
+
+        </dl>
+    </div>
+    <div class="span4">
+        <h6>Company Info</h6>
         <dl>
             <dt>Company Name</dt>
             <dd>{{ $company['companyName']}}</dd>
@@ -24,7 +39,8 @@
             <dd>{{ $company['email']}}</dd>
         </dl>
     </div>
-    <div class="span6">
+    <div class="span4">
+        <h6>&nbsp;</h6>
         <dl>
             <dt>Expertise & Skills</dt>
             <dd>{{ $company['expertise']}}</dd>
