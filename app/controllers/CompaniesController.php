@@ -66,6 +66,97 @@ class CompaniesController extends AdminController {
         return '<a href="'.URL::to('companies/detail/'.$data['_id']).'">'.$data['companyName'].'</a>';
     }
 
+    public function postAdd($data = null)
+    {
+        $data = Input::get();
+
+        $users = LMongo::collection('users');
+
+        if( $user = $users->where('username',$data['username'])->first() ){
+
+            unset($data['password']);
+            unset($data['repass']);
+
+        }else{
+            $newuser['fullname'] = $data['fullname'];
+            $newuser['username'] = $data['username'];
+            $newuser['designation'] = $data['designation'];
+            $newuser['company'] = $data['companyName'];
+            $newuser['password'] = Hash::make($data['password']);
+
+            unset($data['password']);
+            unset($data['repass']);
+
+
+            if($in = $users->insert($newuser)){
+                $data['userid'] = $in->__toString();
+            }
+        }
+
+        return parent::postAdd($data);
+    }
+
+    public function postEdit($id,$data = null)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyName' => 'required',
+            'mainCategory'=> 'required'
+        );
+
+        if($data['password'] != ''){
+            $validator['password'] = 'same:repass';
+        }
+
+        $this->validator = $validator;
+
+        $users = LMongo::collection('users');
+
+        if( $data['userid'] == '' ||
+            $data['oldusername'] == '' ||
+            $data['username'] != $data['oldusername'] ) // new account holder
+        {
+
+            if( $user = $users->where('username',$data['username'])->first() ){ // can not use existing username
+
+                unset($data['password']);
+                unset($data['repass']);
+
+            }else{
+                $newuser['fullname'] = $data['fullname'];
+                $newuser['username'] = $data['username'];
+                $newuser['designation'] = $data['designation'];
+                $newuser['company'] = $data['companyName'];
+                $newuser['password'] = Hash::make($data['password']);
+
+                unset($data['password']);
+                unset($data['repass']);
+
+                if($in = $users->insert($newuser)){
+                    $data['userid'] = $in->__toString();
+                }
+            }
+
+        }else if($data['userid'] != '' && ($data['username'] == $data['oldusername']) ){
+
+            $userdata['fullname'] = $data['fullname'];
+            $userdata['designation'] = $data['designation'];
+            $userdata['company'] = $data['companyName'];
+
+            if($data['password'] != ''){
+                $userdata['password'] = Hash::make($data['password']);
+            }
+
+            unset($data['password']);
+            unset($data['repass']);
+
+            $in = $users->where('username',$data['username'])->update($userdata);
+        }
+
+        return parent::postEdit($id,$data);
+    }
 
     public function getDetail($id)
     {
@@ -90,6 +181,15 @@ class CompaniesController extends AdminController {
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
 
+        $select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
+
+        array_unshift($pheads, array($select_all,array('search'=>false,'sort'=>false)));
+        array_unshift($pheads, array('#',array('search'=>false,'sort'=>false)));
+
+        // add action column
+        array_push($pheads,
+            array('Actions',array('search'=>false,'sort'=>false,'clear'=>true))
+        );
 
         return View::make('companies.detail')
             ->with('ajaxsource','products' )

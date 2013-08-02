@@ -8,20 +8,34 @@
 {{Former::open_for_files($submit,'POST',array('class'=>'custom addAttendeeForm'))}}
 
 {{ Former::hidden('id')->value($formdata['_id']) }}
+
 <div class="row">
     <div class="span6">
+        <fieldset>
+            <legend>Account Holder <span class="note">( also registered as buyer individual )</span></legend>
+            {{ Former::text('fullname','Name')->class('auto_userdatabyname')->id('acc_fullname') }}
+            {{ Former::text('username','Email')->class('auto_userdatabyemail')->id('acc_username') }}
+            {{ Former::text('designation','Designation')->id('acc_designation') }}
+            {{ Former::password('password','Password') }}
+            {{ Former::password('repass','Repeat Password') }}
+            {{ Former::hidden('userid')->value($formdata['userid'])->id('acc_user_id') }}
+            {{ Former::hidden('oldusername')->value($formdata['username']) }}
+          </fieldset>
 
-        {{ Former::select('mainCategory','Company Category')->options(Config::get('se.company_categories')) }}
-        {{ Former::text('companyName','Company Name') }}
-        {{ Former::select('countryHQ')->options(Config::get('country.countries'))->label('Country (HQ)') }}
-        {{ Former::text('website','Website') }}
-        {{ Former::text('email','Email (Main)') }}
+
 
     </div>
     <div class="span6">
-        {{ Former::text('expertise','Expertise & Skills') }}
-        {{ Former::textarea('about','About') }}
-
+        <fieldset>
+            <legend>Company Info</legend>
+            {{ Former::select('mainCategory','Company Category')->options(Config::get('se.company_categories')) }}
+            {{ Former::text('companyName','Company Name') }}
+            {{ Former::select('countryHQ')->options(Config::get('country.countries'))->label('Country (HQ)') }}
+            {{ Former::text('website','Website') }}
+            {{ Former::text('email','Email (Main)') }}
+            {{ Former::text('expertise','Expertise & Skills') }}
+            {{ Former::textarea('about','About') }}
+        </fieldset>
     </div>
 </div>
 

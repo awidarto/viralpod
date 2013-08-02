@@ -42,6 +42,8 @@ class AdminController extends Controller {
 
     public $newbutton = null;
 
+    public $backlink = '';
+
 
 	public function __construct(){
 
@@ -53,6 +55,7 @@ class AdminController extends Controller {
 
 		$this->beforeFilter('auth', array('on'=>'get', 'only'=>array('getIndex','getAdd','getEdit') ));
 
+        $this->backlink = strtolower($this->controller_name);
 	}
 
 
@@ -448,9 +451,9 @@ class AdminController extends Controller {
 				$obj = $this->afterSave($obj);
 
 				//Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
-		    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saved successfully');
+		    	return Redirect::to($this->backlink)->with('notify_success',ucfirst(Str::singular($controller_name)).' saved successfully');
 			}else{
-		    	return Redirect::to($controller_name)->with('notify_success',ucfirst(Str::singular($controller_name)).' saving failed');
+		    	return Redirect::to($this->backlink)->with('notify_success',ucfirst(Str::singular($controller_name)).' saving failed');
 			}
 
 
