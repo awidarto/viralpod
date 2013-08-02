@@ -167,15 +167,15 @@ class CompaniesController extends AdminController {
 
         $pheads = array(
             array('Product',array('search'=>true,'sort'=>true)),
-            array('Images',array('search'=>false,'sort'=>false)),
+            //array('Images',array('search'=>false,'sort'=>false)),
             array('Brand',array('search'=>true,'sort'=>true)),
             array('Collection',array('search'=>true,'sort'=>true)),
             array('Trade Name',array('search'=>true,'sort'=>true)),
             array('Model No.',array('search'=>true,'sort'=>true)),
             array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
             array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
-            array('Tags',array('search'=>true,'sort'=>true)),
-            array('HTags',array('search'=>true,'sort'=>true)),
+            //array('Tags',array('search'=>true,'sort'=>true)),
+            //array('HTags',array('search'=>true,'sort'=>true)),
             array('Price',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
@@ -192,7 +192,7 @@ class CompaniesController extends AdminController {
         );
 
         return View::make('companies.detail')
-            ->with('ajaxsource','products' )
+            ->with('ajaxsource',URL::to('companies/products/'.$id ) )
             ->with('disablesort','0,1' )
             ->with('ajaxdel',URL::to('products/del') )
             ->with('heads',$pheads)
@@ -206,7 +206,7 @@ class CompaniesController extends AdminController {
 
         $this->heads = array(
             array('Product',array('search'=>true,'sort'=>true)),
-            array('Images',array('search'=>false,'sort'=>false)),
+            //array('Images',array('search'=>false,'sort'=>false)),
             array('Brand',array('search'=>true,'sort'=>true)),
             array('Collection',array('search'=>true,'sort'=>true)),
             array('Trade Name',array('search'=>true,'sort'=>true)),
@@ -235,13 +235,13 @@ class CompaniesController extends AdminController {
         return $this->pageGenerator();
     }
 
-    public function postProducts()
+    public function postProducts($company)
     {
 
         $this->model = LMongo::collection('products');
 
         $this->fields = array(
-            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
             array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
             array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -264,7 +264,7 @@ class CompaniesController extends AdminController {
         $name = HTML::link('products/view/'.$data['_id'],$data['productName']);
         if(isset($data['thumbnail_url']) && count($data['thumbnail_url'])){
             $display = HTML::image($data['thumbnail_url'][0].'?'.time(), $data['filename'][0], array('style'=>'min-width:100px;','id' => $data['_id']));
-            return $display.'<br /><span class="img-more" id="'.$data['_id'].'">more images</span>';
+            return $name.'<br />'.$display.'<br /><span class="img-more" id="'.$data['_id'].'">more images</span>';
         }else{
             return $name;
         }

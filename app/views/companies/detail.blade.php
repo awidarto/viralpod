@@ -158,7 +158,7 @@
 </div>
 
 {{ View::make('companies.products')
-            ->with('ajaxsource',URL::to('products') )
+            ->with('ajaxsource',URL::to('companies/products/'.$company['_id'] ) )
             ->with('disablesort','0,1' )
             ->with('ajaxdel',URL::to('products/del') )
             ->with('heads',$heads);
