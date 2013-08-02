@@ -272,5 +272,30 @@ class CompaniesController extends AdminController {
         }
     }
 
+    public function postDistributors($company)
+    {
+
+        $this->model = LMongo::collection('companies');
+
+        $this->model->where('companyId',$company);
+
+        $this->fields = array(
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
+            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+        );
+
+        return $this->tableResponder();
+    }
 
 }

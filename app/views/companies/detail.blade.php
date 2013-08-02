@@ -216,7 +216,7 @@
     <h3 id="myModalLabel">Add Office or Showroom</h3>
   </div>
   <div class="modal-body">
-
+        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
    </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -230,7 +230,7 @@
     <h3 id="myModalLabel">Add Distributor or Agent</h3>
   </div>
   <div class="modal-body">
-
+        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -244,7 +244,7 @@
     <h3 id="myModalLabel">Add Product</h3>
   </div>
   <div class="modal-body">
-
+        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
