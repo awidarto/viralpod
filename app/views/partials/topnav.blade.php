@@ -1,3 +1,12 @@
+<?php
+    function sa($item){
+        if(URL::to($item) == URL::full() ){
+            return  'class="active"';
+        }else{
+            return '';
+        }
+    }
+?>
 <div class="container top-nav">
     <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
@@ -7,12 +16,12 @@
     <div class="nav-collapse collapse">
         <ul class="nav">
             @if(Auth::check())
-                <li><a href="{{ URL::to('companies') }}" class="active" >Companies</a></li>
-                <li><a href="{{ URL::to('products') }}" class="active" >Products</a></li>
-                <li><a href="{{ URL::to('projects') }}" class="active" >Projects</a></li>
-                <li><a href="{{ URL::to('events') }}" class="active" >Events</a></li>
-                <li><a href="{{ URL::to('members') }}" class="active" >Members</a></li>
-                <li><a href="{{ URL::to('administrators') }}" class="active" >Administrators</a></li>
+                <li><a href="{{ URL::to('companies') }}" {{ sa('companies') }} >Companies</a></li>
+                <li><a href="{{ URL::to('products') }}" {{ sa('products') }} >Products</a></li>
+                <li><a href="{{ URL::to('projects') }}" {{ sa('projects') }} >Projects</a></li>
+                <li><a href="{{ URL::to('events') }}" {{ sa('events') }} >Events</a></li>
+                <li><a href="{{ URL::to('members') }}" {{ sa('members') }} >Members</a></li>
+                <li><a href="{{ URL::to('administrators') }}" {{ sa('administrators') }} >Administrators</a></li>
             @endif
         </ul>
     </div><!--/.nav-collapse -->

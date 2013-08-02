@@ -240,6 +240,8 @@ class CompaniesController extends AdminController {
 
         $this->model = LMongo::collection('products');
 
+        $this->model->where('companyId',$company);
+
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
