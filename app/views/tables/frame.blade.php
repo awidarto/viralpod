@@ -1,30 +1,4 @@
-
-
-<!--<div class="tableHeader">
-    @if(isset($addurl) && $addurl != '')
-        <a class="foundicon-add-doc button right newdoc action clearfix" href="{{URL::to($addurl)}}">&nbsp;&nbsp;<span>{{$newbutton}}</span></a>
-    @endif
-</div>
--->
-
-<div class="row">
-    <div class="span12 command-bar">
-
-        <span id="add_product" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Product</span>
-        <div class="clear"></div>
-
-       @if (Session::has('notify_operationalform'))
-            <div class="alert alert-error">
-                 {{Session::get('notify_operationalform')}}
-            </div>
-        @endif
-     </div>
-</div>
-
-<div class="row">
-   <div class="span12">
-
-      <table class="table table-condensed dataTable" id="table-product">
+      <table class="table {{ $class }}" id="{{ $id }}" >
 
             <thead>
 
@@ -133,17 +107,10 @@
 
       </table>
 
-   </div>
-</div>
-
-
-@yield('dialog')
-
-
 
 <script type="text/javascript">
 
-    var oTable;
+    var {{ $table }};
 
     var current_pay_id = 0;
     var current_del_id = 0;
@@ -158,7 +125,7 @@
     /* Formating function for row details */
     function fnFormatDetails ( nTr )
     {
-        var aData = oTable.fnGetData( nTr );
+        var aData = {{ $table }}.fnGetData( nTr );
 
         console.log(aData);
 
@@ -192,7 +159,7 @@
 
         asInitVals = new Array();
 
-        oTable = $('#table-product').DataTable(
+        {{ $table }} = $('table#{{$id}}').DataTable(
             {
                 "bProcessing": true,
                 "bServerSide": true,
@@ -226,44 +193,41 @@
             }
         );
 
-        $('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
-
-
-        $('.dataTable tbody td .expander').on( 'click', function () {
+        $('table#{{$id}} tbody td .expander').on( 'click', function () {
 
             var nTr = $(this).parents('tr')[0];
-            if ( oTable.fnIsOpen(nTr) )
+            if ( {{ $table }}.fnIsOpen(nTr) )
             {
-                oTable.fnClose( nTr );
+                {{ $table }}.fnClose( nTr );
             }
             else
             {
-                oTable.fnOpen( nTr, fnFormatDetails(nTr), 'details-expand' );
+                {{ $table }}.fnOpen( nTr, fnFormatDetails(nTr), 'details-expand' );
             }
         } );
 
 
         //header search
 
-        $('thead input.filter').keyup( function () {
+        $('table#{{$id}} thead input.filter').keyup( function () {
             console.log($('thead input').index(this));
             /* Filter on the column (the index) of this element */
             var search_index = $('thead input').index(this);
-            oTable.fnFilter( this.value, search_index );
+            {{ $table }}.fnFilter( this.value, search_index );
         } );
 
-        $('thead input.dateinput').change( function () {
+        $('table#{{$id}} thead input.dateinput').change( function () {
             /* Filter on the column (the index) of this element */
             console.log($('thead input').index(this));
             var search_index = $('thead input').index(this);
-            oTable.fnFilter( this.value,  search_index  );
+            {{ $table }}.fnFilter( this.value,  search_index  );
         } );
 
-        $('thead input.datetimeinput').change( function () {
+        $('table#{{$id}} thead input.datetimeinput').change( function () {
             /* Filter on the column (the index) of this element */
             console.log($('thead input').index(this));
             var search_index = $('thead input').index(this);
-            oTable.fnFilter( this.value,  search_index  );
+            {{ $table }}.fnFilter( this.value,  search_index  );
         } );
 
         eldatetime = $('.datetimepickersearch').datetimepicker({
@@ -281,8 +245,8 @@
             var ins = $(this).find('input');
             console.log(ins);
             console.log($('thead input').index(ins));
-            var search_index = $('thead input').index(ins);
-            oTable.fnFilter( $(ins).val(),  search_index  );
+            var search_index = $('table#{{$id}} thead input').index(ins);
+            {{ $table }}.fnFilter( $(ins).val(),  search_index  );
         });
 
         eldatetime.on('changeDate', function(e) {
@@ -290,21 +254,21 @@
             var ins = $(this).find('input');
             console.log(ins);
             console.log($('thead input').index(ins));
-            var search_index = $('thead input').index(ins);
-            oTable.fnFilter( $(ins).val(),  search_index  );
+            var search_index = $('table#{{$id}} thead input').index(ins);
+            {{ $table }}.fnFilter( $(ins).val(),  search_index  );
         });
 
         $('thead select.selector').change( function () {
             /* Filter on the column (the index) of this element */
             var prev = $(this).parent().prev('input');
 
-            var search_index = $('thead input').index(prev);
+            var search_index = $('table#{{$id}} thead input').index(prev);
 
-            oTable.fnFilter( this.value,  search_index  );
+            {{ $table }}.fnFilter( this.value,  search_index  );
         } );
 
         $('#clearsearch').click(function(){
-            $('thead input').val('');
+            $('table#{{$id}} thead input').val('');
         });
         /*
          * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
@@ -337,7 +301,7 @@
 
         */
 
-        $('#select_all').click(function(){
+        $('table#{{$id}} #select_all').click(function(){
             if($('#select_all').is(':checked')){
                 $('.selector').attr('checked', true);
             }else{
@@ -345,12 +309,12 @@
             }
         });
 
-        $(".selectorAll").on("click", function(){
+        $("table#{{$id}} .selectorAll").on("click", function(){
             var id = $(this).attr("id");
             if($(this).is(':checked')){
-                $('.selector_'+id).attr('checked', true);
+                $('table#{{$id}} .selector_'+id).attr('checked', true);
             }else{
-                $('.selector_'+id).attr('checked', false);
+                $('table#{{$id}} .selector_'+id).attr('checked', false);
             }
         });
 
@@ -362,7 +326,7 @@
                     //redraw table
 
 
-                    oTable.fnStandingRedraw();
+                    {{ $table }}.fnStandingRedraw();
 
                     $('#delstatusindicator').html('Payment status updated');
 
@@ -380,7 +344,7 @@
 
         });
 
-        $('table.dataTable').click(function(e){
+        $('table#{{$id}}').click(function(e){
 
             if ($(e.target).is('.del')) {
                 var _id = e.target.id;
@@ -390,7 +354,7 @@
                         if(data.status == 'OK'){
                             //redraw table
 
-                            oTable.fnStandingRedraw();
+                            {{ $table }}.fnStandingRedraw();
                             alert("Item id : " + _id + " deleted");
                         }
                     },'json');
@@ -398,129 +362,6 @@
                     alert("Deletion cancelled");
                 }
             }
-
-            if ($(e.target).is('.pbadge')) {
-                var _id = e.target.id;
-
-                current_print_id = _id;
-
-                $('#print_id').val(_id);
-
-                <?php
-
-                    $printsource = (isset($printsource))?$printsource.'/': '/';
-
-                ?>
-
-                var src = '{{ $printsource }}' + _id;
-
-                $('#print_frame').attr('src',src);
-
-                $('#printBadge').modal();
-            }
-
-            if ($(e.target).is('.pay')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-
-                $('#updatePayment').modal();
-
-            }
-
-            if ($(e.target).is('.formstatus')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-
-                $('#updateFormStatus').modal();
-
-            }
-
-            if ($(e.target).is('.formstatusindiv')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-
-                $('#updateFormStatusindividual').modal();
-
-            }
-
-            if ($(e.target).is('.paygolf')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-
-                $('#updatePaymentGolf').modal();
-
-            }
-
-            if ($(e.target).is('.paygolfconvention')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-
-                $('#updatePaymentGolfConvention').modal();
-
-            }
-
-            if ($(e.target).is('.resendmail')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-                $('#errormessagemodal').text('');
-                $('#successmessagemodal').text('');
-                $('#updateResendmail').modal();
-
-            }
-
-            if ($(e.target).is('.sendexhibitregistmail')) {
-                var _id = e.target.id;
-
-                current_pay_id = _id;
-                $('#exhbitor_errormessagemodal').text('');
-                $('#exhbitor_successmessagemodal').text('');
-                $('#exhibitorResendmail').modal();
-
-            }
-
-
-
-            if ($(e.target).is('.viewform')) {
-
-                var _id = e.target.id;
-                var _rel = $(e.target).attr('rel');
-                var url = '{{ URL::to('/')  }}' + '/exhibitor/' + _rel + '/' + _id;
-
-
-                //var url = $(this).attr('url');
-                //var modal_id = $(this).attr('data-controls-modal');
-                $("#viewformModal .modal-body").load(url);
-
-
-                $('#viewformModal').modal();
-
-            }
-
-            if ($(e.target).is('.editform')) {
-
-                var _id = e.target.id;
-                var _rel = $(e.target).attr('rel');
-                var url = '{{ URL::to('/')  }}' + '/exhibitor/' + _rel + '/' + _id;
-
-
-                //var url = $(this).attr('url');
-                //var modal_id = $(this).attr('data-controls-modal');
-                setTimeout(function() {
-                    $("#editformModal .modal-body").load(url);
-                }, 1000);
-
-
-
-                $('#editformModal').modal();
-
-            }
-
 
             if ($(e.target).is('.pop')) {
                 var _id = e.target.id;
@@ -540,3 +381,5 @@
 
     });
   </script>
+
+

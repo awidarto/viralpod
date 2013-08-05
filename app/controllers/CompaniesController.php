@@ -181,21 +181,51 @@ class CompaniesController extends AdminController {
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
 
+        $offheads = array(
+            array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_office_categories'))),
+            array('Location',array('search'=>true,'sort'=>true)),
+            array('Country',array('search'=>true,'sort'=>true,'select'=>Config::get('country.countries'))),
+            array('City',array('search'=>true,'sort'=>true)),
+            array('Email',array('search'=>true,'sort'=>true)),
+            array('Phone',array('search'=>true,'sort'=>true)),
+            array('Fax',array('search'=>true,'sort'=>true)),
+            array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
+        );
+
+        $agentheads = array(
+            array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_agent_categories'))),
+            array('Location',array('search'=>true,'sort'=>true)),
+            array('Country',array('search'=>true,'sort'=>true,'select'=>Config::get('country.countries'))),
+            array('City',array('search'=>true,'sort'=>true)),
+            array('Region Covered',array('search'=>true,'sort'=>true,'select'=>Config::get('region.search_regions'))),
+            array('Country Covered',array('search'=>true,'sort'=>true,'select'=>Config::get('country.countries'))),
+            array('Specific Local Region',array('search'=>true,'sort'=>true)),
+            array('Email',array('search'=>true,'sort'=>true)),
+            array('Phone',array('search'=>true,'sort'=>true)),
+            array('Fax',array('search'=>true,'sort'=>true)),
+            array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
+        );
+
         $select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
 
-        array_unshift($pheads, array($select_all,array('search'=>false,'sort'=>false)));
-        array_unshift($pheads, array('#',array('search'=>false,'sort'=>false)));
-
-        // add action column
-        array_push($pheads,
-            array('Actions',array('search'=>false,'sort'=>false,'clear'=>true))
-        );
+        //product head
+        $pheads = $this->completeHeads($pheads);
+        //office head
+        $offheads = $this->completeHeads($offheads);
+        //agent head
+        $agentheads = $this->completeHeads($agentheads);
 
         return View::make('companies.detail')
             ->with('ajaxsource',URL::to('companies/products/'.$id ) )
             ->with('disablesort','0,1' )
             ->with('ajaxdel',URL::to('products/del') )
-            ->with('heads',$pheads)
+
+            ->with('productheads',$pheads)
+            ->with('officeheads',$offheads)
+            ->with('agentheads',$agentheads)
+
             ->with('crumb',$this->crumb)
             ->with('company',$company);
     }
@@ -261,6 +291,113 @@ class CompaniesController extends AdminController {
         return $this->tableResponder();
     }
 
+    public function postProjects($company)
+    {
+
+        $this->model = LMongo::collection('products');
+
+        $this->model->where('companyId',$company);
+
+        $this->fields = array(
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
+            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+        );
+
+        return $this->tableResponder();
+    }
+
+    public function postEvents($company)
+    {
+
+        $this->model = LMongo::collection('products');
+
+        $this->model->where('companyId',$company);
+
+        $this->fields = array(
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
+            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+        );
+
+        return $this->tableResponder();
+    }
+
+    public function postOffices($company)
+    {
+
+        $this->model = LMongo::collection('products');
+
+        $this->model->where('companyId',$company);
+
+        $this->fields = array(
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
+            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+        );
+
+        return $this->tableResponder();
+    }
+
+    public function postAgents($company)
+    {
+
+        $this->model = LMongo::collection('products');
+
+        $this->model->where('companyId',$company);
+
+        $this->fields = array(
+            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
+            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+            array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
+        );
+
+        return $this->tableResponder();
+    }
+
+
+
+
     public function pics($data)
     {
         $name = HTML::link('products/view/'.$data['_id'],$data['productName']);
@@ -296,6 +433,11 @@ class CompaniesController extends AdminController {
         );
 
         return $this->tableResponder();
+    }
+
+    public function getAddoffice()
+    {
+        return View::make('companies.addoffice');
     }
 
 }

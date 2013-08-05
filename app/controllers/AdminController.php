@@ -613,6 +613,20 @@ class AdminController extends Controller {
 		return $population;
 	}
 
+    public function completeHeads($heads){
+
+        $select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
+
+        //product head
+        array_unshift($heads, array($select_all,array('search'=>false,'sort'=>false)));
+        array_unshift($heads, array('#',array('search'=>false,'sort'=>false)));
+        array_push($heads,
+            array('Actions',array('search'=>false,'sort'=>false,'clear'=>true))
+        );
+
+        return $heads;
+    }
+
 	public function get_view($id){
 		$_id = new MongoId($id);
 

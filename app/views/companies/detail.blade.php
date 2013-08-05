@@ -52,133 +52,102 @@
 </div>
 
 <div class="row">
+    <div class="span16">
 
-    <div class="span6">
+        <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Products</a></li>
+                <li><a href="#tab2" data-toggle="tab">Offices & Showrooms</a></li>
+                <li><a href="#tab3" data-toggle="tab">Distributors & Agents</a></li>
+                <li><a href="#tab4" data-toggle="tab">Events</a></li>
+                <li><a href="#tab5" data-toggle="tab">Projects</a></li>
+            </ul>
 
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
 
-        <div class="accordion" id="accordionLeft">
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionLeft" href="#collapseOneLeft">
-                 <h5>Offices & Showrooms</h5>
-              </a>
+                        {{ View::make('tables.frame')
+                                ->with('table','prodTable')
+                                ->with('class','product-table')
+                                ->with('id','table-product')
+                                ->with('ajaxsource',URL::to('companies/products/'.$company['_id'] ) )
+                                ->with('disablesort','0,1' )
+                                ->with('ajaxdel',URL::to('products/del') )
+                                ->with('heads',$productheads);
+                         }}
+                </div>
+                <div class="tab-pane" id="tab2">
+                    <span id="add_office" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Office or Showroom</span>
+                    <div class="clear"></div>
+
+                        {{ View::make('tables.frame')
+                                ->with('table','offTable')
+                                ->with('class','office-table')
+                                ->with('id','table-office')
+                                ->with('ajaxsource',URL::to('companies/offices/'.$company['_id'] ) )
+                                ->with('disablesort','0,1' )
+                                ->with('ajaxdel',URL::to('offices/del') )
+                                ->with('heads',$officeheads);
+                         }}
+
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <span id="add_distributor" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Distributor or Agent</span>
+                    <div class="clear"></div>
+
+                        {{ View::make('tables.frame')
+                                ->with('table','agentTable')
+                                ->with('class','distributor-table')
+                                ->with('id','table-distributor')
+                                ->with('ajaxsource',URL::to('companies/distributors/'.$company['_id'] ) )
+                                ->with('disablesort','0,1' )
+                                ->with('ajaxdel',URL::to('offices/del') )
+                                ->with('heads',$agentheads);
+                         }}
+
+                </div>
+
+                <div class="tab-pane" id="tab4">
+                    <span id="add_event" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Event</span>
+                    <div class="clear"></div>
+                    <table class="table" id="table-event">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Website</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="tab5">
+                    <span id="add_project" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Project</span>
+                    <div class="clear"></div>
+
+                    <table class="table" id="table-project">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Website</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-            <div id="collapseOneLeft" class="accordion-body collapse in">
-              <div class="accordion-inner">
-                <span id="add_office" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Office or Showroom</span>
-                <div class="clear"></div>
-                <table class="table dataTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Website</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionLeft" href="#collapseTwoLeft">
-                <h5>Distributors & Agents</h5>
-              </a>
-            </div>
-            <div id="collapseTwoLeft" class="accordion-body collapse">
-              <div class="accordion-inner">
-                <span id="add_distributor" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Distributor or Agent</span>
-                <div class="clear"></div>
-                <table class="table dataTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Website</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
-
-    </div>
-    <div class="span6">
-
-        <div class="accordion" id="accordionRight">
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionRight" href="#collapseOneRight">
-                 <h5>Events</h5>
-              </a>
-            </div>
-            <div id="collapseOneRight" class="accordion-body collapse">
-              <div class="accordion-inner">
-                <span id="add_event" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Event</span>
-                <div class="clear"></div>
-                <table class="table dataTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Website</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionRight" href="#collapseTwoRight">
-                <h5>Projects</h5>
-              </a>
-            </div>
-            <div id="collapseTwoRight" class="accordion-body collapse">
-              <div class="accordion-inner">
-                <span id="add_project" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Project</span>
-                <div class="clear"></div>
-                <table class="table dataTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Website</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
 
     </div>
 </div>
-
-{{ View::make('companies.products')
-            ->with('ajaxsource',URL::to('companies/products/'.$company['_id'] ) )
-            ->with('disablesort','0,1' )
-            ->with('ajaxdel',URL::to('products/del') )
-            ->with('heads',$heads);
- }}
 
 
 <script type="text/javascript">
@@ -195,15 +164,48 @@
             $('#addDistributorModal').modal('show');
         });
 
-        $('.dataTable .products').dataTable({
-            'bProcessing': true,
-            'bServerSide': true,
-            'sAjaxSource': '{{ URL::to('products') }}',
-            'sDom': 'Tpit',
+        $('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
 
-        });
+        evTable = $('#table-event').DataTable(
+            {
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": "{{ URL::to('companies/events/'.$company['_id'] ) }}",
+                "oLanguage": { "sSearch": "Search "},
+                "sPaginationType": "full_numbers",
+                "sDom": 'Tlrpit',
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                    $.ajax( {
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": fnCallback
+                    } );
+                }
+            }
+        );
 
-        //$('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
+
+        proTable = $('#table-project').DataTable(
+            {
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": "{{ URL::to('companies/projects/'.$company['_id'] ) }}",
+                "oLanguage": { "sSearch": "Search "},
+                "sPaginationType": "full_numbers",
+                "sDom": 'Tlrpit',
+                "fnServerData": function ( sSource, aoData, fnCallback ) {
+                    $.ajax( {
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": fnCallback
+                    } );
+                }
+            }
+        );
 
     });
 
@@ -216,7 +218,7 @@
     <h3 id="myModalLabel">Add Office or Showroom</h3>
   </div>
   <div class="modal-body">
-        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
+        <iframe src="{{ URL::to('companies/addoffice/'.$company['_id'] ) }}" class="dialog-frame"></iframe>
    </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

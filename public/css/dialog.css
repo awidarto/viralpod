@@ -1,7 +1,7 @@
 html,
 body {
-  height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
+  /*height: 100%;
+   The html and body elements cannot have any padding or margin. */
 }
 
 body{
@@ -315,11 +315,3 @@ a:hover{
 .tabbable{
     width: 1170px;
 }
-
-.nav-tabs>li>a{
-    background-color: #eee;
-}
-.nav-tabs>li.active>a{
-    font-weight: bold;
-}
-

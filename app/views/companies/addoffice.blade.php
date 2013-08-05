@@ -1,8 +1,12 @@
+@extends('layouts.dialog')
+
+
+@section('content')
 
 {{Former::vertical_open_for_files('companies/addoffice','POST',array('class'=>'vertical'))}}
 
 <div class="row">
-    <div class="span5">
+    <div class="span6">
 
         {{ Former::select('officeCategory','Category')->options(Config::get('se.office_categories')) }}
         {{ Former::text('location','Address') }}
@@ -12,7 +16,7 @@
 
 
     </div>
-    <div class="span5">
+    <div class="span6">
         {{ Former::select('country')->options(Config::get('country.countries'))->label('Country') }}
         {{ Former::select('city')->options(Config::get('city.cities'))->label('City') }}
     </div>
@@ -47,3 +51,5 @@ $(document).ready(function() {
 });
 
 </script>
+
+@stop
