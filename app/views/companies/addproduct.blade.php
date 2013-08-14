@@ -1,7 +1,13 @@
-{{Former::vertical_open_for_files('products/add','POST',array('class'=>'custom addAttendeeForm'))}}
+@extends('layouts.dialog')
+
+
+@section('content')
+
+{{Former::vertical_open_for_files('companies/addproduct','POST',array('class'=>'vertical','id'=>'addProduct'))}}
 
 <div class="row">
     <div class="span5">
+        {{ Former::hidden('companyId',$companyId) }}
 
         {{ Former::text('brandName','Brand Name') }}
         {{ Former::text('shopCategory','Shop Category') }}
@@ -123,6 +129,9 @@
         {{ Former::textarea('availableMaterialFinishes','Avail. Materials & Finishes') }}
         {{ Former::textarea('availableDimension','Avail. Dimensions (mm)') }}
 
+        <button class="btn btn-primary" id="btnAddProduct">Save changes</button>
+        <div id="notifier" style="display:none;" ></div>
+
     </div>
 </div>
 
@@ -209,10 +218,12 @@ $(document).ready(function() {
         // load default permission here
     });
 
+    /*
     var editor = new wysihtml5.Editor('ecoFriendly', { // id of textarea element
       toolbar:      'wysihtml5-toolbar', // id of toolbar element
       parserRules:  wysihtml5ParserRules // defined in parser rules set
     });
+    */
 
     $('#name').keyup(function(){
         var title = $('#name').val();
@@ -224,6 +235,44 @@ $(document).ready(function() {
         setVisibleOptions();
     });
 
+    $('#addProduct').on('submit',function(){
+        $(this).ajaxSubmit(options);
+        return false;
+    });
+
+// jquery form
+    var options = {
+        target:        '#notifier',   // target element(s) to be updated with server response
+        beforeSubmit:  preSubmission,  // pre-submit callback
+        success:       postSubmission,  // post-submit callback
+        url: '{{ URL::to($ajaxpost) }}',
+        dataType:  'json'
+    };
+
+    function preSubmission(formData, jqForm, options){
+        var queryString = $.param(formData);
+        $('#notifier').html('Processing...');
+        return true;
+    }
+
+    // post-submit callback
+    function postSubmission(responseObj, statusText, xhr, $form)  {
+        var data = responseObj;
+
+        if(data.status == 'OK'){
+            $('#notifier').html('Data Saved Successfully');
+            parent.$('#addProductModal').modal('hide');
+        }else if(data.status == 'INVALID'){
+            $('#notifier').html('Validation Failed').show();
+        }else if(data.status == 'SAVEFAILED'){
+            $('#notifier').html('Saving Failed').show();
+        }
+
+    }
+
+
 });
 
 </script>
+
+@stop

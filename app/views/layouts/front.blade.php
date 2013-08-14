@@ -18,10 +18,13 @@
 
     {{ HTML::style('css/bootstrap-timepicker.css') }}
 
+    {{ HTML::style('css/bootstrap-modal.css') }}
+
     {{ HTML::style('css/bootstrap-datetimepicker.min.css') }}
 
     {{ HTML::style('css/flick/jquery-ui-1.9.2.custom.min.css') }}
 
+    {{ HTML::style('css/summernote.css') }}
 
 
 
@@ -64,6 +67,7 @@
       {{ HTML::script('js/bootstrap-timepicker.js') }}
       {{ HTML::script('js/bootstrap-datetimepicker.min.js') }}
 
+      {{ HTML::script('js/summernote.min.js') }}
 
       {{ HTML::script('js/select2.js') }}
 
@@ -82,6 +86,8 @@
       {{ HTML::script('js/jquery-fileupload/jquery.fileupload-audio.js') }}
       {{ HTML::script('js/jquery-fileupload/jquery.fileupload-video.js') }}
       {{ HTML::script('js/jquery-fileupload/jquery.fileupload-validate.js') }}
+
+
 
       <script type="text/javascript">
         base = '{{ URL::to('/') }}/';
@@ -148,6 +154,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     {{ HTML::script('bootplus/js/bootstrap.min.js')}}
+    {{ HTML::script('js/bootstrap-modalmanager.js') }}
+    {{ HTML::script('js/bootstrap-modal.js') }}
 
 </body>
 </html>

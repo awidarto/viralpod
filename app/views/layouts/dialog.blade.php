@@ -60,6 +60,7 @@
       {{ HTML::script('js/jquery-datatables/datatables.bootstrap.js')}}
 
       {{ HTML::script('js/jquery.tagsinput.js') }}
+      {{ HTML::script('js/jquery.form.js') }}
 
       {{ HTML::script('js/bootstrap-timepicker.js') }}
       {{ HTML::script('js/bootstrap-datetimepicker.min.js') }}

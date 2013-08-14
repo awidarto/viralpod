@@ -65,6 +65,8 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="tab1">
+                    <span id="add_product" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Product</span>
+                    <div class="clear"></div>
 
                         {{ View::make('tables.frame')
                                 ->with('table','prodTable')
@@ -110,37 +112,32 @@
                 <div class="tab-pane" id="tab4">
                     <span id="add_event" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Event</span>
                     <div class="clear"></div>
-                    <table class="table" id="table-event">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Country</th>
-                                <th>Website</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
 
-                        </tbody>
-                    </table>
+                        {{ View::make('tables.frame')
+                                ->with('table','eventTable')
+                                ->with('class','event-table')
+                                ->with('id','table-event')
+                                ->with('ajaxsource',URL::to('companies/events/'.$company['_id'] ) )
+                                ->with('disablesort','0,1' )
+                                ->with('ajaxdel',URL::to('event/del') )
+                                ->with('heads',$eventheads);
+                         }}
+
                 </div>
                 <div class="tab-pane" id="tab5">
                     <span id="add_project" class="add-btn btn pull-right"><i class="icon-plus-sign"></i> Add Project</span>
                     <div class="clear"></div>
 
-                    <table class="table" id="table-project">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Country</th>
-                                <th>Website</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                        {{ View::make('tables.frame')
+                                ->with('table','projectTable')
+                                ->with('class','project-table')
+                                ->with('id','table-project')
+                                ->with('ajaxsource',URL::to('companies/projects/'.$company['_id'] ) )
+                                ->with('disablesort','0,1' )
+                                ->with('ajaxdel',URL::to('project/del') )
+                                ->with('heads',$projectheads);
+                         }}
 
-                        </tbody>
-                    </table>
                 </div>
 
             </div>
@@ -164,94 +161,107 @@
             $('#addDistributorModal').modal('show');
         });
 
+        $('#add_event').on('click',function(){
+            $('#addEventModal').modal('show');
+        });
+
+        $('#add_project').on('click',function(){
+            $('#addProjectModal').modal('show');
+        });
+
+        /* after hide */
+        $('#addOfficeModal').on('hidden', function () {
+            offTable.fnDraw();
+        });
+
+        $('#addProductModal').on('hidden', function () {
+            prodTable.fnDraw();
+        });
+
+        $('#addDistributorModal').on('hidden', function () {
+            agentTable.fnDraw();
+        });
+
+        $('#addEventModal').on('hidden', function () {
+            eventTable.fnDraw();
+        });
+
+        $('#addProjectModal').on('hidden', function () {
+            projectTable.fnDraw();
+        });
+
+
         $('div.dataTables_length select').wrap('<div class="ingrid styled-select" />');
-
-        evTable = $('#table-event').DataTable(
-            {
-                "bProcessing": true,
-                "bServerSide": true,
-                "sAjaxSource": "{{ URL::to('companies/events/'.$company['_id'] ) }}",
-                "oLanguage": { "sSearch": "Search "},
-                "sPaginationType": "full_numbers",
-                "sDom": 'Tlrpit',
-                "fnServerData": function ( sSource, aoData, fnCallback ) {
-                    $.ajax( {
-                        "dataType": 'json',
-                        "type": "POST",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
-                    } );
-                }
-            }
-        );
-
-
-        proTable = $('#table-project').DataTable(
-            {
-                "bProcessing": true,
-                "bServerSide": true,
-                "sAjaxSource": "{{ URL::to('companies/projects/'.$company['_id'] ) }}",
-                "oLanguage": { "sSearch": "Search "},
-                "sPaginationType": "full_numbers",
-                "sDom": 'Tlrpit',
-                "fnServerData": function ( sSource, aoData, fnCallback ) {
-                    $.ajax( {
-                        "dataType": 'json',
-                        "type": "POST",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
-                    } );
-                }
-            }
-        );
 
     });
 
 </script>
 
 <!-- Modal -->
+<div id="addProductModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Product</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('companies/addproduct/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddProduct" name="iframeAddProduct"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+
 <div id="addOfficeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Add Office or Showroom</h3>
-  </div>
-  <div class="modal-body">
-        <iframe src="{{ URL::to('companies/addoffice/'.$company['_id'] ) }}" class="dialog-frame"></iframe>
-   </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Office or Showroom</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('companies/addoffice/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddOffice" name="iframeAddOffice"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
 </div>
 
 <div id="addDistributorModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Add Distributor or Agent</h3>
-  </div>
-  <div class="modal-body">
-        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Distributor or Agent</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('companies/addagent/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
 </div>
 
-<div id="addProductModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Add Product</h3>
-  </div>
-  <div class="modal-body">
-        <iframe src="{{ URL::to('') }}" class="dialog-frame"></iframe>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
+<div id="addEventModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Event</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('companies/addevent/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+
+<div id="addProjectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Project</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('companies/addproject/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
 </div>
 
 

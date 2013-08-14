@@ -1,3 +1,4 @@
+.btn-primary,
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -6,6 +7,7 @@
 .btn-primary[disabled]
 {
 	background-color: maroon;
+    background-image:none;
 }
 
 input, textarea, .uneditable-input{
@@ -123,3 +125,8 @@ legend{
     font-weight: normal;
 }
 
+#notifier{
+    display: block;
+    padding: 10px;
+    border:thin solid #ddd;
+}

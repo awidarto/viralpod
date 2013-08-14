@@ -8,6 +8,8 @@ class CompaniesController extends AdminController {
 
 		$this->controller_name = str_replace('Controller', '', get_class());
 
+        $this->beforeFilter('auth', array('on'=>'get', 'only'=>array('getIndex','getAdd','getEdit','getDetail') ));
+
         //$this->crumb->append($this->controller_name);
         $this->crumb->append('Home','left',true);
 		$this->crumb->append(strtolower($this->controller_name));
@@ -165,7 +167,7 @@ class CompaniesController extends AdminController {
 
         $this->crumb->append($company['_id']->__toString(),'right',false,$company['companyName']);
 
-        $pheads = array(
+        $productheads = array(
             array('Product',array('search'=>true,'sort'=>true)),
             //array('Images',array('search'=>false,'sort'=>false)),
             array('Brand',array('search'=>true,'sort'=>true)),
@@ -208,23 +210,50 @@ class CompaniesController extends AdminController {
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
         );
 
+        $eventheads = array(
+            array('Title',array('search'=>true,'sort'=>true )),
+            array('Description',array('search'=>true,'sort'=>true)),
+            array('Owner',array('search'=>true,'sort'=>true)),
+            array('Start',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('End',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Opening Hours',array('search'=>true,'sort'=>true)),
+            array('Tags',array('search'=>true,'sort'=>true)),
+            array('HTags',array('search'=>true,'sort'=>true)),
+            array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
+        );
+
+        $projectheads = array(
+            array('Name',array('search'=>true,'sort'=>true )),
+            array('Application',array('search'=>true,'sort'=>true)),
+            array('Product Used',array('search'=>true,'sort'=>true)),
+            array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
+            array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
+        );
+
         $select_all = Former::checkbox()->name('Select All')->check(false)->id('select_all');
 
         //product head
-        $pheads = $this->completeHeads($pheads);
+        $productheads = $this->completeHeads($productheads);
         //office head
         $offheads = $this->completeHeads($offheads);
         //agent head
         $agentheads = $this->completeHeads($agentheads);
+
+        $eventheads = $this->completeHeads($eventheads);
+
+        $projectheads = $this->completeHeads($projectheads);
 
         return View::make('companies.detail')
             ->with('ajaxsource',URL::to('companies/products/'.$id ) )
             ->with('disablesort','0,1' )
             ->with('ajaxdel',URL::to('products/del') )
 
-            ->with('productheads',$pheads)
+            ->with('productheads',$productheads)
             ->with('officeheads',$offheads)
             ->with('agentheads',$agentheads)
+            ->with('eventheads',$eventheads)
+            ->with('projectheads',$projectheads)
 
             ->with('crumb',$this->crumb)
             ->with('company',$company);
@@ -294,22 +323,15 @@ class CompaniesController extends AdminController {
     public function postProjects($company)
     {
 
-        $this->model = LMongo::collection('products');
+        $this->model = LMongo::collection('project');
 
         $this->model->where('companyId',$company);
 
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
-            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('projectName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('projectApplication',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('productUsed',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
         );
@@ -320,22 +342,20 @@ class CompaniesController extends AdminController {
     public function postEvents($company)
     {
 
-        $this->model = LMongo::collection('products');
+        $this->model = LMongo::collection('events');
 
         $this->model->where('companyId',$company);
 
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
-            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('eventTitle',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('eventDescription',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('eventOwner',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('startDate',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('endDate',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('openingHours',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
         );
@@ -346,22 +366,19 @@ class CompaniesController extends AdminController {
     public function postOffices($company)
     {
 
-        $this->model = LMongo::collection('products');
+        $this->model = LMongo::collection('offices');
 
         $this->model->where('companyId',$company);
 
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
-            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('officeCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('location',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('country',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('city',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('email',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('phone',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('fax',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
         );
@@ -372,7 +389,7 @@ class CompaniesController extends AdminController {
     public function postAgents($company)
     {
 
-        $this->model = LMongo::collection('products');
+        $this->model = LMongo::collection('distributors');
 
         $this->model->where('companyId',$company);
 
@@ -394,9 +411,6 @@ class CompaniesController extends AdminController {
 
         return $this->tableResponder();
     }
-
-
-
 
     public function pics($data)
     {
@@ -412,22 +426,21 @@ class CompaniesController extends AdminController {
     public function postDistributors($company)
     {
 
-        $this->model = LMongo::collection('companies');
+        $this->model = LMongo::collection('distributors');
 
         $this->model->where('companyId',$company);
 
         $this->fields = array(
-            //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
-            array('brandName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
-            array('collectionName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('tradeName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('modelNo',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('mainCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('productCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('visibleTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('hiddenTags',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
-            array('priceUSD',array('kind'=>'currency','query'=>'like','pos'=>'both','show'=>true)),
+            array('agentCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('location',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
+            array('country',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('city',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('region',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('countryCoveredAgent',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('specificLocalRegionAgent',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('email',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('phone',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
+            array('fax',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('createdDate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
             array('lastUpdate',array('kind'=>'date','query'=>'like','pos'=>'both','show'=>true)),
         );
@@ -435,9 +448,229 @@ class CompaniesController extends AdminController {
         return $this->tableResponder();
     }
 
-    public function getAddoffice()
+    public function getAddoffice($id)
     {
-        return View::make('companies.addoffice');
+        return View::make('companies.addoffice')
+            ->with('companyId',$id)
+            ->with('ajaxpost','companies/addoffice');
     }
+
+    public function postAddoffice()
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required',
+            'email'=> 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['createdDate'] = new MongoDate();
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('offices');
+
+            if($obj = $model->insert($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getAddagent($id)
+    {
+        return View::make('companies.adddistributor')
+            ->with('companyId',$id)
+            ->with('ajaxpost','companies/addagent');
+    }
+
+    public function postAddagent()
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required',
+            'email'=> 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['createdDate'] = new MongoDate();
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('distributors');
+
+            if($obj = $model->insert($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getAddproduct($id)
+    {
+        return View::make('companies.addproduct')
+            ->with('companyId',$id)
+            ->with('ajaxpost','companies/addproduct');
+    }
+
+    public function postAddproduct()
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['createdDate'] = new MongoDate();
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('products');
+
+            if($obj = $model->insert($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+
+    public function getAddevent($id)
+    {
+        return View::make('companies.addevent')
+            ->with('companyId',$id)
+            ->with('ajaxpost','companies/addevent');
+    }
+
+    public function postAddevent()
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['createdDate'] = new MongoDate();
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('events');
+
+            if($obj = $model->insert($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+
+    public function getAddproject($id)
+    {
+        return View::make('companies.addproject')
+            ->with('companyId',$id)
+            ->with('ajaxpost','companies/addproject');
+    }
+
+    public function postAddproject()
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['createdDate'] = new MongoDate();
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('projects');
+
+            if($obj = $model->insert($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
 
 }
