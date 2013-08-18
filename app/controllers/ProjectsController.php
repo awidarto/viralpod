@@ -11,7 +11,7 @@ class ProjectsController extends AdminController {
         $this->crumb->append('Home','left',true);
         $this->crumb->append(strtolower($this->controller_name));
 
-		$this->model = new Product();
+		$this->model = LMongo::collection('project');
 
 	}
 
@@ -33,7 +33,7 @@ class ProjectsController extends AdminController {
 
 	public function postIndex()
 	{
-		$this->model = LMongo::collection('products');
+		$this->model = LMongo::collection('project');
 
 		$this->fields = array(
 			array('projectName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),

@@ -63,6 +63,61 @@ class CompaniesController extends AdminController {
         return $actions;
     }
 
+    public function productActions($data)
+    {
+        $detail = '<a href="'.URL::to('companies/detail/'.$data['_id']).'"><i class="icon-eye-open"></i>Detail</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<span class="update" id="'.$data['_id'].'" ><i class="icon-edit"></i>Update</span>';
+
+        $actions = $detail.'<br />'.$edit.'<br />'.$delete;
+
+        return $actions;
+    }
+
+    public function officeActions($data)
+    {
+        $detail = '<a href="'.URL::to('companies/detail/'.$data['_id']).'"><i class="icon-eye-open"></i>Detail</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<span class="update" id="'.$data['_id'].'" ><i class="icon-edit"></i>Update</span>';
+
+        $actions = $detail.'<br />'.$edit.'<br />'.$delete;
+
+        return $actions;
+    }
+
+    public function agentActions($data)
+    {
+        $detail = '<a href="'.URL::to('companies/detail/'.$data['_id']).'"><i class="icon-eye-open"></i>Detail</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<span class="update" id="'.$data['_id'].'" ><i class="icon-edit"></i>Update</span>';
+
+        $actions = $detail.'<br />'.$edit.'<br />'.$delete;
+
+        return $actions;
+    }
+
+    public function eventActions($data)
+    {
+        $detail = '<a href="'.URL::to('companies/detail/'.$data['_id']).'"><i class="icon-eye-open"></i>Detail</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<span class="update" id="'.$data['_id'].'" ><i class="icon-edit"></i>Update</span>';
+
+        $actions = $detail.'<br />'.$edit.'<br />'.$delete;
+
+        return $actions;
+    }
+
+    public function projectActions($data)
+    {
+        $detail = '<a href="'.URL::to('companies/detail/'.$data['_id']).'"><i class="icon-eye-open"></i>Detail</a>';
+        $delete = '<span class="del" id="'.$data['_id'].'" ><i class="icon-trash"></i>Delete</span>';
+        $edit = '<span class="update" id="'.$data['_id'].'" ><i class="icon-edit"></i>Update</span>';
+
+        $actions = $detail.'<br />'.$edit.'<br />'.$delete;
+
+        return $actions;
+    }
+
     public function makeDetail($data)
     {
         return '<a href="'.URL::to('companies/detail/'.$data['_id']).'">'.$data['companyName'].'</a>';
@@ -176,8 +231,8 @@ class CompaniesController extends AdminController {
             array('Model No.',array('search'=>true,'sort'=>true)),
             array('Main Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_main_categories'))),
             array('Category',array('search'=>true,'sort'=>true,'select'=>Config::get('se.search_product_categories'))),
-            //array('Tags',array('search'=>true,'sort'=>true)),
-            //array('HTags',array('search'=>true,'sort'=>true)),
+            array('Tags',array('search'=>true,'sort'=>true)),
+            array('HTags',array('search'=>true,'sort'=>true)),
             array('Price',array('search'=>true,'sort'=>true)),
             array('Created',array('search'=>true,'sort'=>true,'date'=>true)),
             array('Last Update',array('search'=>true,'sort'=>true,'date'=>true)),
@@ -301,6 +356,8 @@ class CompaniesController extends AdminController {
 
         $this->model->where('companyId',$company);
 
+        $this->makeActions = 'productActions';
+
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','callback'=>'pics','show'=>true)),
@@ -327,6 +384,8 @@ class CompaniesController extends AdminController {
 
         $this->model->where('companyId',$company);
 
+        $this->makeActions = 'projectActions';
+
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('projectName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true,'attr'=>array('class'=>'expander'))),
@@ -345,6 +404,8 @@ class CompaniesController extends AdminController {
         $this->model = LMongo::collection('events');
 
         $this->model->where('companyId',$company);
+
+        $this->makeActions = 'eventActions';
 
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -370,6 +431,8 @@ class CompaniesController extends AdminController {
 
         $this->model->where('companyId',$company);
 
+        $this->makeActions = 'officeActions';
+
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
             array('officeCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -392,6 +455,8 @@ class CompaniesController extends AdminController {
         $this->model = LMongo::collection('distributors');
 
         $this->model->where('companyId',$company);
+
+        $this->makeActions = 'agentActions';
 
         $this->fields = array(
             //array('productName',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -429,6 +494,8 @@ class CompaniesController extends AdminController {
         $this->model = LMongo::collection('distributors');
 
         $this->model->where('companyId',$company);
+
+        $this->makeActions = 'agentActions';
 
         $this->fields = array(
             array('agentCategory',array('kind'=>'text','query'=>'like','pos'=>'both','show'=>true)),
@@ -671,6 +738,300 @@ class CompaniesController extends AdminController {
         }
 
     }
+
+    // updates
+
+    public function getUpdateagent($id)
+    {
+        $model = LMongo::collection('distributors');
+
+        $_id = new MongoId($id);
+
+        $population = $model->where('_id',$_id)->first();
+
+        foreach ($population as $key=>$val) {
+            if($val instanceof MongoDate){
+                $population[$key] = date('d-m-Y H:i:s',$val->sec);
+            }
+        }
+
+        Former::populate($population);
+
+        return View::make('companies.updatedistributor')
+            ->with('ajaxpost','companies/updateagent/'.$id);
+    }
+
+    public function postUpdateagent($id)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required',
+            'email'=> 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('offices');
+
+            $_id = new MongoId($id);
+
+            if($obj = $model->where('_id',$_id)->update($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getUpdateevent($id)
+    {
+        $model = LMongo::collection('events');
+
+        $_id = new MongoId($id);
+
+        $population = $model->where('_id',$_id)->first();
+
+        foreach ($population as $key=>$val) {
+            if($val instanceof MongoDate){
+                $population[$key] = date('d-m-Y H:i:s',$val->sec);
+            }
+        }
+
+        Former::populate($population);
+
+        return View::make('companies.updateevent')
+            ->with('ajaxpost','companies/updateevent/'.$id);
+    }
+
+    public function postUpdateevent($id)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('events');
+
+            $_id = new MongoId($id);
+
+            if($obj = $model->where('_id',$_id)->update($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getUpdateproject($id)
+    {
+        $model = LMongo::collection('project');
+
+        $_id = new MongoId($id);
+
+        $population = $model->where('_id',$_id)->first();
+
+        foreach ($population as $key=>$val) {
+            if($val instanceof MongoDate){
+                $population[$key] = date('d-m-Y H:i:s',$val->sec);
+            }
+        }
+
+        Former::populate($population);
+
+        return View::make('companies.updateproject')
+            ->with('ajaxpost','companies/updateproject/'.$id);
+    }
+
+    public function postUpdateproject($id)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('project');
+
+            $_id = new MongoId($id);
+
+            if($obj = $model->where('_id',$_id)->update($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getUpdateoffice($id)
+    {
+        $model = LMongo::collection('offices');
+
+        $_id = new MongoId($id);
+
+        $population = $model->where('_id',$_id)->first();
+
+        foreach ($population as $key=>$val) {
+            if($val instanceof MongoDate){
+                $population[$key] = date('d-m-Y H:i:s',$val->sec);
+            }
+        }
+
+        Former::populate($population);
+
+        return View::make('companies.updateoffice')
+            ->with('ajaxpost','companies/updateoffice/'.$id);
+    }
+
+    public function postUpdateoffice($id)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('offices');
+
+            $_id = new MongoId($id);
+
+            if($obj = $model->where('_id',$_id)->update($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
+    public function getUpdateproduct($id)
+    {
+        $model = LMongo::collection('products');
+
+        $_id = new MongoId($id);
+
+        $population = $model->where('_id',$_id)->first();
+
+        foreach ($population as $key=>$val) {
+            if($val instanceof MongoDate){
+                $population[$key] = date('d-m-Y H:i:s',$val->sec);
+            }
+        }
+
+        Former::populate($population);
+
+        return View::make('companies.updateproduct')
+            ->with('ajaxpost','companies/updateproduct/'.$id);
+    }
+
+    public function postUpdateproduct($id)
+    {
+
+        $data = Input::get();
+
+        $validator = array(
+            'companyId' => 'required'
+        );
+
+        $validation = Validator::make($input = $data, $validator);
+
+        if($validation->fails()){
+
+            return Response::json(array('status'=>'INVALID'));
+
+        }else{
+
+            unset($data['csrf_token']);
+
+            $data['lastUpdate'] = new MongoDate();
+
+            $model = LMongo::collection('products');
+
+            $_id = new MongoId($id);
+
+            if($obj = $model->where('_id',$_id)->update($data)){
+
+                //Event::fire('product.createformadmin',array($obj['_id'],$passwordRandom,$obj['conventionPaymentStatus']));
+                return Response::json(array('status'=>'OK'));
+            }else{
+                return Response::json(array('status'=>'SAVEFAILED'));
+            }
+
+
+        }
+
+    }
+
 
 
 }

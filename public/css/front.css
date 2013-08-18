@@ -218,6 +218,11 @@ td span.del{
     color : red;
 }
 
+td span.update{
+    cursor: pointer;
+    color : green;
+}
+
 td i{
     font-size: 13px;
     margin-right: 4px;
@@ -315,7 +320,7 @@ a:hover{
     padding-bottom: 15px;
 }
 .tabbable{
-    width: 1170px;
+    width: 100%;
 }
 
 .nav-tabs>li>a{

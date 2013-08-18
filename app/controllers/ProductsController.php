@@ -115,6 +115,10 @@ class ProductsController extends AdminController {
         }
     }
 
+    public function getViewpics($id)
+    {
+
+    }
 
 
 }

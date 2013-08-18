@@ -44,6 +44,8 @@ class AdminController extends Controller {
 
     public $backlink = '';
 
+    public $makeActions = 'makeActions';
+
 
 	public function __construct(){
 
@@ -314,8 +316,8 @@ class AdminController extends Controller {
 			$extra = $doc;
 
 			//$select = Former::checkbox('sel_'.$doc['_id'])->check(false)->id($doc['_id'])->class('selector');
-
-			$actions = $this->makeActions($doc);
+            $actionMaker = $this->makeActions;
+			$actions = $this->$actionMaker($doc);
 
 			$row = array();
 

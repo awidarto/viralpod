@@ -302,10 +302,10 @@
         */
 
         $('table#{{$id}} #select_all').click(function(){
-            if($('#select_all').is(':checked')){
-                $('.selector').attr('checked', true);
+            if($('table#{{$id}} #select_all').is(':checked')){
+                $('table#{{$id}} .selector').attr('checked', true);
             }else{
-                $('.selector').attr('checked', false);
+                $('table#{{$id}} .selector').attr('checked', false);
             }
         });
 
@@ -361,6 +361,14 @@
                 }else{
                     alert("Deletion cancelled");
                 }
+            }
+
+            if ($(e.target).is('.update')) {
+                var _id = e.target.id;
+                var src = '{{ $ajaxupdate }}/' + _id;
+                $('#{{ $updateframe }}').attr('src',src);
+                $('#{{ $updatedialog }}').modal('show');
+
             }
 
             if ($(e.target).is('.pop')) {

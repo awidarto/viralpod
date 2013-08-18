@@ -75,6 +75,9 @@
                                 ->with('ajaxsource',URL::to('companies/products/'.$company['_id'] ) )
                                 ->with('disablesort','0,1' )
                                 ->with('ajaxdel',URL::to('products/del') )
+                                ->with('ajaxupdate',URL::to('companies/updateproduct') )
+                                ->with('updatedialog','addProductModal' )
+                                ->with('updateframe','iframeAddProduct' )
                                 ->with('heads',$productheads);
                          }}
                 </div>
@@ -89,6 +92,9 @@
                                 ->with('ajaxsource',URL::to('companies/offices/'.$company['_id'] ) )
                                 ->with('disablesort','0,1' )
                                 ->with('ajaxdel',URL::to('offices/del') )
+                                ->with('ajaxupdate',URL::to('companies/updateoffice') )
+                                ->with('updatedialog','addOfficeModal' )
+                                ->with('updateframe','iframeAddOffice' )
                                 ->with('heads',$officeheads);
                          }}
 
@@ -103,7 +109,10 @@
                                 ->with('id','table-distributor')
                                 ->with('ajaxsource',URL::to('companies/distributors/'.$company['_id'] ) )
                                 ->with('disablesort','0,1' )
-                                ->with('ajaxdel',URL::to('offices/del') )
+                                ->with('ajaxdel',URL::to('distributors/del') )
+                                ->with('ajaxupdate',URL::to('companies/updateagent') )
+                                ->with('updatedialog','addDistributorModal' )
+                                ->with('updateframe','iframeAddAgent' )
                                 ->with('heads',$agentheads);
                          }}
 
@@ -119,7 +128,10 @@
                                 ->with('id','table-event')
                                 ->with('ajaxsource',URL::to('companies/events/'.$company['_id'] ) )
                                 ->with('disablesort','0,1' )
-                                ->with('ajaxdel',URL::to('event/del') )
+                                ->with('ajaxdel',URL::to('events/del') )
+                                ->with('ajaxupdate',URL::to('companies/updateevent') )
+                                ->with('updatedialog','addEventModal' )
+                                ->with('updateframe','iframeAddEvent' )
                                 ->with('heads',$eventheads);
                          }}
 
@@ -134,7 +146,10 @@
                                 ->with('id','table-project')
                                 ->with('ajaxsource',URL::to('companies/projects/'.$company['_id'] ) )
                                 ->with('disablesort','0,1' )
-                                ->with('ajaxdel',URL::to('project/del') )
+                                ->with('ajaxdel',URL::to('projects/del') )
+                                ->with('ajaxupdate',URL::to('companies/updateproject') )
+                                ->with('updatedialog','addProjectModal' )
+                                ->with('updateframe','iframeAddProject' )
                                 ->with('heads',$projectheads);
                          }}
 
@@ -168,6 +183,12 @@
         $('#add_project').on('click',function(){
             $('#addProjectModal').modal('show');
         });
+
+        /*
+        $('#table-product').on('click',function(ev){
+            $('#productImageModal').modal('show');
+        });
+        */
 
         /* after hide */
         $('#addOfficeModal').on('hidden', function () {
@@ -244,7 +265,7 @@
         <h3 id="myModalLabel">Add Event</h3>
     </div>
     <div class="modal-body">
-        <iframe src="{{ URL::to('companies/addevent/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+        <iframe src="{{ URL::to('companies/addevent/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddEvent" name="iframeAddAgent"></iframe>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -257,12 +278,24 @@
         <h3 id="myModalLabel">Add Project</h3>
     </div>
     <div class="modal-body">
-        <iframe src="{{ URL::to('companies/addproject/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+        <iframe src="{{ URL::to('companies/addproject/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddProject" name="iframeAddAgent"></iframe>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
 </div>
 
+<div id="productImageModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">View Images</h3>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{ URL::to('products/viewpics/'.$company['_id'] ) }}" class="dialog-frame" id="iframeAddAgent" name="iframeAddAgent"></iframe>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 
 @stop
