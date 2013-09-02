@@ -1,6 +1,6 @@
 <?php
 
 return array(
-	'name'=>'Admin - Studio Elves',
+	'name'=>'Admin - ViralPod',
 
 );

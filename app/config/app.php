@@ -190,7 +190,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 		'LMongo'          => 'LMongo\Facades\LMongo',
 		'EloquentMongo'   => 'LMongo\Eloquent\Model',
-		'Former'          => 'Former\Facades\Illuminate',
+		'Former'          => 'Former\Facades\Former',
 		'Breadcrumb'      => 'Noherczeg\Breadcrumb\Facades\Breadcrumb',
         'ImageWorkshop'   => 'PHPImageWorkshop\ImageWorkshop',
         'Date'            => 'Intervention\Helper\Facades\Date',

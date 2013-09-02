@@ -5,7 +5,7 @@
 
 <h4>{{$company['companyName']}}</h4>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span4">
         <h6>Account Holder</h6>
         <dl>
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span16">
 
         <div class="tabbable"> <!-- Only required for left/right tabs -->

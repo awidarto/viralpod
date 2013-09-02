@@ -10,7 +10,7 @@
 </div>
 -->
 
-<div class="row">
+<div class="row-fluid">
 	<div class="span12 command-bar">
 
         <h4>{{ $title }}</h4>
@@ -24,7 +24,7 @@
 	 </div>
 </div>
 
-<div class="row">
+<div class="row-fluid">
    <div class="span12">
 
       <table class="table table-condensed dataTable attendeeTable">

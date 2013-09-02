@@ -1,27 +1,27 @@
-@extends('layouts.front')
+@extends('layouts.signin')
 
 @section('content')
 
-@if (Session::has('login_errors'))
-    <div class="row">
-        <div class="alert alert-error">
-             <button type="button" class="close" data-dismiss="alert"></button>
-             Email or password incorrect.
-        </div>
-    </div>
-@endif
 
-{{ Former::horizontal_open()->id('login')->method('POST'); }}
+    {{ Former::horizontal_open()->id('login')->method('POST')->class('form-signin'); }}
+        <h2 class="form-signin-heading">Please sign in</h2>
+        @if (Session::has('login_errors'))
+            <div class="alert alert-error">
+                 <button type="button" class="close" data-dismiss="alert"></button>
+                 Email or password incorrect.
+            </div>
+        @endif
 
-<div class="row">
-    <div class="span6 offset3" >
-        {{ Former::five_text('username')->name('username')->label('E-mail') }}
-        {{ Former::five_password('password')->name('password') }}
+        {{ Former::five_text('username')->name('username')->label('E-mail')->class('input-block-level')->placeholder('you@email.com') }}
+        {{ Former::five_password('password')->name('password')->class('input-block-level')->placeholder('password') }}
 
-        {{ Former::actions()->submit('Log In') }}
-    </div>
-</div>
-
-{{ Former::close() }}
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-primary" type="submit">
+           Sign in
+           <i class="icon-circle-arrow-right"></i>
+        </button>
+    {{ Former::close() }}
 
 @stop
